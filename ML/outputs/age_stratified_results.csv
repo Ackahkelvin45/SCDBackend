@@ -1,0 +1,13 @@
+,n,AUC-ROC,Sensitivity,Specificity,F1 (Resp)
+XGBoost (Paediatric),725.0,0.8746,0.8429,0.7573,0.7564
+XGBoost (Adult),214.0,0.8047,0.7234,0.7725,0.5714
+LightGBM (Paediatric),725.0,0.8625,0.8179,0.7775,0.7533
+LightGBM (Adult),214.0,0.7839,0.6596,0.7904,0.5487
+Random Forest (Paediatric),725.0,0.8575,0.7393,0.8112,0.725
+Random Forest (Adult),214.0,0.8006,0.4681,0.8683,0.4835
+Gradient Boosting (Paediatric),725.0,0.8651,0.5607,0.9011,0.6528
+Gradient Boosting (Adult),214.0,0.7933,0.3191,0.9641,0.4412
+Logistic Reg (Paediatric),725.0,0.8756,0.8357,0.7663,0.7573
+Logistic Reg (Adult),214.0,0.782,0.5957,0.7964,0.5138
+SVM (Paediatric),725.0,0.878,0.8393,0.7775,0.7655
+SVM (Adult),214.0,0.7897,0.617,0.7784,0.5133

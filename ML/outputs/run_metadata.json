@@ -1,0 +1,79 @@
+{
+  "trained_at": "2026-05-05T11:39:16.999770",
+  "data_path": "/Users/kelvinackah/Desktop/projects/freelance/SCD/SCDBackend/ML/data/hu_clean_data.csv",
+  "study_parameters": {
+    "min_days_on_hu": 90,
+    "response_threshold_gdl": 1.0,
+    "target_definition": "Responder_next_visit: response at visit t where days_on_hu(t) >= 90, defined as hgb(t) - baseline_hgb >= 1.0 g/dL; predicted using features from visit t-1 only"
+  },
+  "dataset": {
+    "n_total": 4782,
+    "n_patients": 905,
+    "n_responders": 1401,
+    "n_non_responders": 3381,
+    "responder_pct": 29.3
+  },
+  "splits": {
+    "n_train": 3206,
+    "n_val": 637,
+    "n_test": 939
+  },
+  "features": [
+    "age",
+    "gender_encoded",
+    "hb_genotype_encoded",
+    "baseline_hgb",
+    "prev_hgb",
+    "prev_anc",
+    "prev_arc",
+    "prev_platelet_count",
+    "prev_wbc",
+    "prev_rbc",
+    "prev_mcv",
+    "prev_hct",
+    "prev_days_on_hu"
+  ],
+  "cv_aucs": {
+    "XGBoost": 0.8436,
+    "LightGBM": 0.8406,
+    "Random Forest": 0.8271,
+    "Gradient Boosting": 0.8419,
+    "Logistic Reg": 0.8495,
+    "SVM": 0.8492
+  },
+  "test_aucs": {
+    "XGBoost": 0.8684,
+    "LightGBM": 0.854,
+    "Random Forest": 0.8541,
+    "Gradient Boosting": 0.8582,
+    "Logistic Reg": 0.8638,
+    "SVM": 0.8669
+  },
+  "best_model": "XGBoost",
+  "thresholds": {
+    "XGBoost": {
+      "Best F1": 0.5721,
+      "Sens \u226590%": 0.0188
+    },
+    "LightGBM": {
+      "Best F1": 0.5637,
+      "Sens \u226590%": 0.0556
+    },
+    "Random Forest": {
+      "Best F1": 0.4642,
+      "Sens \u226590%": 0.0067
+    },
+    "Gradient Boosting": {
+      "Best F1": 0.3256,
+      "Sens \u226590%": 0.0495
+    },
+    "Logistic Reg": {
+      "Best F1": 0.6776,
+      "Sens \u226590%": 0.0015
+    },
+    "SVM": {
+      "Best F1": 0.3094,
+      "Sens \u226590%": 0.0007
+    }
+  }
+}

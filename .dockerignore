@@ -7,7 +7,7 @@ __pycache__
 .gitignore
 *.md
 ML/data
-ML/outputs
+ML/scripts
 db.sqlite3
 staticfiles
 .env

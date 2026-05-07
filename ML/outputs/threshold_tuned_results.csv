@@ -1,0 +1,13 @@
+,Threshold,Sensitivity,Specificity,F1 (Resp)
+XGBoost (Best F1),0.572,0.7615,0.8023,0.7145
+XGBoost (Sens ≥90%),0.019,1.0,0.0,0.5166
+LightGBM (Best F1),0.564,0.6942,0.8366,0.6942
+LightGBM (Sens ≥90%),0.056,1.0,0.0,0.5166
+Random Forest (Best F1),0.464,0.7339,0.7974,0.6946
+Random Forest (Sens ≥90%),0.007,1.0,0.0,0.5166
+Gradient Boosting (Best F1),0.326,0.7554,0.8007,0.7098
+Gradient Boosting (Sens ≥90%),0.05,1.0,0.0,0.5166
+Logistic Reg (Best F1),0.678,0.6269,0.8905,0.6845
+Logistic Reg (Sens ≥90%),0.001,1.0,0.0147,0.5203
+SVM (Best F1),0.309,0.7859,0.7974,0.726
+SVM (Sens ≥90%),0.001,1.0,0.0147,0.5203
