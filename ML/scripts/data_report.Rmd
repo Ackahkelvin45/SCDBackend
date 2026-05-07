@@ -1,0 +1,497 @@
+---
+title: "Hydroxyurea Initiation Study — Data Preparation Report"
+subtitle: "Ahodwo Facility Patient Records"
+date: "`r format(Sys.Date(), '%d %B %Y')`"
+output:
+  html_document:
+    theme: flatly
+    toc: true
+    toc_float: true
+    toc_depth: 3
+    number_sections: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE, fig.width = 9, fig.height = 5)
+
+# Anchor working directory to project root regardless of knit location
+if (!requireNamespace("rstudioapi", quietly = TRUE) || !rstudioapi::isAvailable()) {
+  root <- normalizePath(file.path(dirname(knitr::current_input(dir = TRUE)), "../.."))
+} else {
+  root <- normalizePath(file.path(dirname(rstudioapi::getActiveDocumentContext()$path), "../.."))
+}
+knitr::opts_knit$set(root.dir = root)
+```
+
+```{r packages}
+required <- c("dplyr", "ggplot2", "readxl", "tableone", "tidyr", "scales")
+missing  <- required[!(required %in% installed.packages()[, "Package"])]
+if (length(missing) > 0) install.packages(missing, repos = "https://cloud.r-project.org")
+
+library(dplyr)
+library(ggplot2)
+library(readxl)
+library(tableone)
+library(tidyr)
+library(scales)
+
+theme_set(
+  theme_minimal(base_size = 13) +
+    theme(plot.title = element_text(face = "bold"),
+          plot.subtitle = element_text(colour = "grey40"),
+          panel.grid.minor = element_blank())
+)
+
+BLUE  <- "#2196F3"
+RED   <- "#F44336"
+GREEN <- "#4CAF50"
+```
+
+---
+
+# Overview
+
+This document describes every transformation applied to the raw patient dataset
+and provides visual summaries of the final cleaned data. It is intended to
+accompany the analysis and serve as an audit trail of all data preparation
+decisions made before the prediction model was built.
+
+The goal of the model is to predict which sickle cell disease patients will be
+initiated on Hydroxyurea, using their clinical history and longitudinal
+laboratory results.
+
+---
+
+# Raw Data — What We Started With
+
+```{r load-raw}
+raw <- read_excel("ML/data/data.xlsx", sheet = "Append1")
+
+raw_rows <- nrow(raw)
+raw_cols <- ncol(raw)
+```
+
+The raw Excel file (`Append1` sheet) contained **`r format(raw_rows, big.mark=",")`
+rows** and **`r raw_cols` columns** before any processing.
+
+```{r raw-summary}
+data.frame(
+  Item  = c("Total rows in raw file", "Total columns", "Sheet name"),
+  Value = c(format(raw_rows, big.mark = ","), raw_cols, "Append1")
+) |> knitr::kable(col.names = c("", ""))
+```
+
+---
+
+# Step-by-Step Manipulations
+
+## Step 1 — Load Data
+
+The file was read directly from Excel using `readxl::read_excel()` targeting the
+`Append1` sheet. This preserves original column names (spaces, brackets,
+special characters) exactly as they appear in the source file, which are then
+cleaned in Step 3.
+
+## Step 2 — Drop Phantom Rows
+
+```{r phantom-rows}
+clean <- raw %>% filter(!is.na(`Case ID`) & `Case ID` != "")
+
+phantom_count <- raw_rows - nrow(clean)
+```
+
+The bottom **`r format(phantom_count, big.mark=",")`** rows of the file
+contained no patient information — only a `Hu Start` flag. These are almost
+certainly a formatting artefact from the data export (a secondary summary table
+appended to the main records). Including them would skew the outcome balance.
+
+```{r phantom-bar}
+data.frame(
+  Status = c("Complete records (kept)", "Phantom rows (removed)"),
+  Count  = c(nrow(clean), phantom_count)
+) %>%
+  ggplot(aes(x = Status, y = Count, fill = Status)) +
+  geom_col(width = 0.5, show.legend = FALSE) +
+  geom_text(aes(label = format(Count, big.mark = ",")), vjust = -0.4, fontface = "bold") +
+  scale_fill_manual(values = c(GREEN, RED)) +
+  scale_y_continuous(labels = comma, expand = expansion(mult = c(0, 0.1))) +
+  labs(title = "Step 2 — Phantom Row Removal",
+       subtitle = paste0(format(phantom_count, big.mark = ","),
+                         " rows removed — ", format(nrow(clean), big.mark = ","), " remain"),
+       x = NULL, y = "Row count")
+```
+
+## Step 3 — Standardise Column Names
+
+All 16 columns with messy names (spaces, brackets, slashes, dots) were renamed
+to clean snake_case equivalents. Examples:
+
+| Original name | Renamed to |
+|---|---|
+| `Hu Start(0/1)` | `Hu_Start` |
+| `hgb(g/dl)` | `hgb` |
+| `rbc *10^12` | `rbc` |
+| `Hb Genotype` | `hb_genotype` |
+| `form.toxicity` | `toxicity` |
+| `history.num_pain_events` | `num_pain_events` |
+| `history.experienced_pain` | `experienced_pain` |
+
+Columns that were already clean (e.g. `id_hu_study_number`, `platelet_count`)
+were left as-is.
+
+## Step 4 — Drop Columns That Should Never Be Used
+
+```{r drop-cols}
+drop_cols <- c(
+  "hu_start_date", "patient_full_name", "patient_med_record_num",
+  "history.pain_history_notes", "Date Patient Registration",
+  "Index", "Column1", "Column2",
+  "form.blood_test_results.select_labs",
+  "anc (SI Unit) 10^9/L", "anc (Conv. Unit)",
+  "arc (SI unit) 10^9/L", "arc (Conv. unit)",
+  "wbc (SI Unit) 10^9/L", "hct (SI unit)", "hct(%)"
+)
+
+dropped_exist <- drop_cols[drop_cols %in% names(raw)]
+```
+
+**`r length(dropped_exist)`** columns were removed:
+
+```{r drop-table}
+data.frame(
+  Column = c("hu_start_date", "patient_full_name", "patient_med_record_num",
+             "history.pain_history_notes", "Date Patient Registration",
+             "Index", "Column1", "Column2",
+             "form.blood_test_results.select_labs",
+             "anc (SI Unit) / (Conv. Unit)",
+             "arc (SI unit) / (Conv. unit)",
+             "wbc (SI Unit) 10^9/L",
+             "hct (SI unit) / hct(%)"),
+  Reason = c("Target leakage — directly encodes the outcome",
+             "PII — must never enter a model",
+             "PII — must never enter a model",
+             "98.8% empty; free text, not structured",
+             "92.9% empty; too sparse to use",
+             "Bare row index, no clinical meaning",
+             "Unnamed column, no clinical meaning",
+             "Unnamed column, no clinical meaning",
+             "Form selector field, no clinical value",
+             "Duplicate unit variants of anc (keep primary)",
+             "Duplicate unit variants of arc (keep primary)",
+             "Duplicate unit variant of wbc (keep primary)",
+             "Duplicate unit variants of hct (keep primary)")
+) |> knitr::kable()
+```
+
+## Step 5 — Filter to Laboratory Visits Only
+
+```{r filter-visits}
+after_rename <- clean %>%
+  rename(
+    Case_ID = `Case ID`, Hu_Start = `Hu Start(0/1)`,
+    Lab_Visit_Date = `Lab Visit Date`, `Visit type` = `Visit type`
+  )
+
+visit_counts <- table(after_rename$`Visit type`)
+```
+
+The dataset contains three visit types. Only **Lab** visits carry blood test
+results — the others were excluded.
+
+```{r visit-bar}
+as.data.frame(visit_counts) %>%
+  rename(Visit_Type = Var1, Count = Freq) %>%
+  mutate(Kept = Visit_Type == "Lab") %>%
+  ggplot(aes(x = reorder(Visit_Type, -Count), y = Count, fill = Kept)) +
+  geom_col(width = 0.5, show.legend = FALSE) +
+  geom_text(aes(label = format(Count, big.mark = ",")), vjust = -0.4, fontface = "bold") +
+  scale_fill_manual(values = c(RED, GREEN)) +
+  scale_y_continuous(labels = comma, expand = expansion(mult = c(0, 0.15))) +
+  labs(title = "Step 5 — Visit Type Filter",
+       subtitle = "Green = kept (Lab visits only), Red = removed",
+       x = "Visit type", y = "Row count")
+```
+
+## Step 6 — Remove Duplicates
+
+After filtering to Lab visits, exact duplicate rows were removed using
+`duplicated()` across all columns simultaneously. A patient should not appear
+twice with identical information on the same date.
+
+## Step 7 — Convert and Standardise Data Types
+
+| Column(s) | Conversion applied |
+|---|---|
+| `Lab_Visit_Date`, `Clinic_Visit_Date`, `dob` | Excel serial numbers → proper `Date` objects (origin: 30 Dec 1899) |
+| `hgb`, `anc`, `arc`, `platelet_count`, `rbc`, `mcv`, `hct`, `wbc` | Text/mixed → numeric; non-convertible entries become `NA` |
+| `gender` | Lowercased + trimmed; missing values labelled `"unknown"` → factor |
+| `hb_genotype` | Lowercased + trimmed → factor with levels: `ss`, `sc`, `sbo`, `dont_know` |
+| `toxicity` | Cast to factor with levels: `none`, `low_anc`, `low_hb`, `low_platelet_count`, `other` |
+| `age` | Truncated to whole integer years |
+
+## Step 8 — Handle Missing Lab Values
+
+Missing values in all eight lab columns were replaced with the **column median**
+computed from the full dataset.
+
+> **Important note:** This imputation uses all available rows because R's role
+> here is data preparation and descriptive reporting only — not model training.
+> In Python, imputation will be recomputed on training rows only and then
+> applied to the test set separately to prevent any data leakage across the
+> train/test split.
+
+## Step 9 — Feature Engineering
+
+Three new sets of features were created:
+
+| Feature | Description |
+|---|---|
+| `age_group` | `"Paediatric"` (age < 18) or `"Adult"` (age ≥ 18) |
+| `days_in_care` | Days elapsed since that patient's first lab visit |
+| `hgb_delta` | Difference between current Hgb and the patient's baseline (first visit) Hgb |
+| `hgb_prev` | Hgb value from the patient's previous visit |
+| `wbc_prev` | WBC value from the patient's previous visit |
+| `anc_prev` | ANC value from the patient's previous visit |
+
+For a patient's first visit, `hgb_prev`, `wbc_prev`, and `anc_prev` are `NA`
+(no prior visit exists). These were filled with the column median.
+
+---
+
+# Final Dataset — Summary
+
+```{r load-clean}
+df <- read.csv("ML/data/hu_clean_data.csv", stringsAsFactors = FALSE)
+
+df$gender      <- as.factor(df$gender)
+df$hb_genotype <- as.factor(df$hb_genotype)
+df$toxicity    <- as.factor(df$toxicity)
+df$age_group   <- as.factor(df$age_group)
+df$Hu_Start    <- as.factor(df$Hu_Start)
+```
+
+```{r final-summary-table}
+data.frame(
+  Item  = c("Total rows (lab visits)", "Total columns", "Unique patients",
+            "Average visits per patient", "Engineered features added"),
+  Value = c(format(nrow(df), big.mark = ","),
+            ncol(df),
+            format(n_distinct(df$Case_ID), big.mark = ","),
+            round(nrow(df) / n_distinct(df$Case_ID), 1),
+            6)
+) |> knitr::kable(col.names = c("", ""))
+```
+
+---
+
+# Visualisations of the Final Clean Data
+
+## Outcome Distribution — Hu_Start
+
+```{r outcome-dist}
+df %>%
+  count(Hu_Start) %>%
+  mutate(pct = n / sum(n),
+         label = paste0(format(n, big.mark = ","), "\n(", percent(pct, 1), ")")) %>%
+  ggplot(aes(x = Hu_Start, y = n, fill = Hu_Start)) +
+  geom_col(width = 0.5, show.legend = FALSE) +
+  geom_text(aes(label = label), vjust = -0.3, fontface = "bold", lineheight = 1.3) +
+  scale_fill_manual(values = c(BLUE, RED)) +
+  scale_y_continuous(labels = comma, expand = expansion(mult = c(0, 0.15))) +
+  labs(title = "Outcome Balance — Hu_Start",
+       subtitle = "0 = Not on Hydroxyurea  |  1 = Started on Hydroxyurea",
+       x = "Hu_Start", y = "Number of visits")
+```
+
+The outcome is imbalanced — approximately 78% of visits are from patients on
+Hydroxyurea. This will be addressed during modelling with appropriate class
+balancing techniques.
+
+## Age Distribution
+
+```{r age-dist}
+ggplot(df, aes(x = age)) +
+  geom_histogram(binwidth = 2, fill = BLUE, colour = "white") +
+  scale_y_continuous(labels = comma) +
+  labs(title = "Age Distribution",
+       subtitle = "Median age indicates a predominantly paediatric cohort",
+       x = "Age (years)", y = "Number of visits") +
+  geom_vline(xintercept = median(df$age, na.rm = TRUE),
+             linetype = "dashed", colour = RED, linewidth = 0.8) +
+  annotate("text", x = median(df$age, na.rm = TRUE) + 1.5,
+           y = max(table(cut(df$age, breaks = seq(0, 80, 2)))) * 0.95,
+           label = paste0("Median: ", median(df$age, na.rm = TRUE), " yrs"),
+           colour = RED, hjust = 0, size = 4)
+```
+
+```{r age-group-bar}
+df %>%
+  count(age_group) %>%
+  mutate(pct = n / sum(n),
+         label = paste0(format(n, big.mark = ","), " (", percent(pct, 1), ")")) %>%
+  ggplot(aes(x = age_group, y = n, fill = age_group)) +
+  geom_col(width = 0.4, show.legend = FALSE) +
+  geom_text(aes(label = label), vjust = -0.4, fontface = "bold") +
+  scale_fill_manual(values = c(BLUE, GREEN)) +
+  scale_y_continuous(labels = comma, expand = expansion(mult = c(0, 0.15))) +
+  labs(title = "Age Group — Paediatric vs Adult",
+       x = NULL, y = "Number of visits")
+```
+
+## Gender Distribution
+
+```{r gender-bar}
+df %>%
+  count(gender) %>%
+  mutate(pct = n / sum(n),
+         label = paste0(format(n, big.mark = ","), "\n(", percent(pct, 1), ")")) %>%
+  ggplot(aes(x = reorder(gender, -n), y = n, fill = gender)) +
+  geom_col(width = 0.5, show.legend = FALSE) +
+  geom_text(aes(label = label), vjust = -0.3, fontface = "bold", lineheight = 1.3) +
+  scale_y_continuous(labels = comma, expand = expansion(mult = c(0, 0.15))) +
+  labs(title = "Gender Distribution", x = NULL, y = "Number of visits")
+```
+
+## Hb Genotype Distribution
+
+```{r genotype-bar}
+df %>%
+  filter(!is.na(hb_genotype)) %>%
+  count(hb_genotype) %>%
+  mutate(pct = n / sum(n),
+         label = paste0(format(n, big.mark = ","), " (", percent(pct, 1), ")")) %>%
+  ggplot(aes(x = reorder(hb_genotype, -n), y = n, fill = hb_genotype)) +
+  geom_col(width = 0.5, show.legend = FALSE) +
+  geom_text(aes(label = label), vjust = -0.4, fontface = "bold") +
+  scale_y_continuous(labels = comma, expand = expansion(mult = c(0, 0.15))) +
+  labs(title = "Haemoglobin Genotype Distribution",
+       subtitle = "HbSS dominates — primary candidates for Hydroxyurea",
+       x = "Hb Genotype", y = "Number of visits")
+```
+
+## Facility Distribution
+
+```{r facility-bar, fig.height=6}
+df %>%
+  count(Facility_name) %>%
+  mutate(pct = n / sum(n)) %>%
+  ggplot(aes(x = reorder(Facility_name, n), y = n)) +
+  geom_col(fill = BLUE, width = 0.6) +
+  geom_text(aes(label = paste0(format(n, big.mark = ","), " (", percent(pct, 1), ")")),
+            hjust = -0.05, size = 3.5) +
+  coord_flip() +
+  scale_x_discrete(labels = function(x) stringr::str_wrap(x, 30)) +
+  scale_y_continuous(labels = comma, expand = expansion(mult = c(0, 0.25))) +
+  labs(title = "Visits by Facility", x = NULL, y = "Number of visits")
+```
+
+## Laboratory Values — Distributions
+
+```{r lab-distributions, fig.height=10}
+lab_long <- df %>%
+  select(hgb, anc, arc, platelet_count, wbc, rbc, mcv, hct) %>%
+  pivot_longer(everything(), names_to = "Measurement", values_to = "Value")
+
+ggplot(lab_long, aes(x = Value)) +
+  geom_histogram(bins = 40, fill = BLUE, colour = "white", alpha = 0.85) +
+  facet_wrap(~Measurement, scales = "free", ncol = 2) +
+  scale_y_continuous(labels = comma) +
+  labs(title = "Laboratory Value Distributions (After Imputation)",
+       x = "Value", y = "Count")
+```
+
+## Laboratory Values — By Outcome Group
+
+```{r lab-by-outcome, fig.height=10}
+df %>%
+  select(Hu_Start, hgb, anc, arc, platelet_count, wbc, rbc, mcv, hct) %>%
+  pivot_longer(-Hu_Start, names_to = "Measurement", values_to = "Value") %>%
+  ggplot(aes(x = Hu_Start, y = Value, fill = Hu_Start)) +
+  geom_boxplot(outlier.size = 0.4, alpha = 0.8, show.legend = FALSE) +
+  scale_fill_manual(values = c(BLUE, RED)) +
+  facet_wrap(~Measurement, scales = "free_y", ncol = 2) +
+  labs(title = "Lab Values by Outcome Group",
+       subtitle = "0 = Not on Hydroxyurea  |  1 = Started on Hydroxyurea",
+       x = "Hu_Start", y = "Value")
+```
+
+## Engineered Features
+
+```{r days-in-care}
+ggplot(df, aes(x = days_in_care)) +
+  geom_histogram(bins = 50, fill = GREEN, colour = "white", alpha = 0.85) +
+  scale_x_continuous(labels = comma) +
+  scale_y_continuous(labels = comma) +
+  labs(title = "Days in Care Distribution",
+       subtitle = "Days elapsed since a patient's first recorded lab visit",
+       x = "Days in care", y = "Number of visits")
+```
+
+```{r hgb-delta}
+ggplot(df, aes(x = hgb_delta)) +
+  geom_histogram(bins = 50, fill = BLUE, colour = "white", alpha = 0.85) +
+  geom_vline(xintercept = 0, linetype = "dashed", colour = RED, linewidth = 0.8) +
+  scale_y_continuous(labels = comma) +
+  labs(title = "Hgb Delta Distribution",
+       subtitle = "Change in haemoglobin from each patient's baseline first visit. Negative = falling Hgb.",
+       x = "hgb_delta (g/dL)", y = "Number of visits")
+```
+
+## Toxicity Categories
+
+```{r toxicity-bar}
+df %>%
+  filter(!is.na(toxicity)) %>%
+  count(toxicity) %>%
+  mutate(pct = n / sum(n),
+         label = paste0(format(n, big.mark = ","), " (", percent(pct, 1), ")")) %>%
+  ggplot(aes(x = reorder(toxicity, -n), y = n, fill = toxicity)) +
+  geom_col(width = 0.5, show.legend = FALSE) +
+  geom_text(aes(label = label), vjust = -0.4, fontface = "bold") +
+  scale_y_continuous(labels = comma, expand = expansion(mult = c(0, 0.15))) +
+  labs(title = "Toxicity / Adverse Event Categories",
+       x = NULL, y = "Number of visits")
+```
+
+---
+
+# Table 1 — Patient Characteristics at Baseline
+
+One row per patient (earliest lab visit). Stratified by Hu_Start outcome.
+
+```{r table1}
+patient_df <- df %>%
+  group_by(Case_ID) %>%
+  arrange(Lab_Visit_Date) %>%
+  slice(1) %>%
+  ungroup() %>%
+  mutate(Hu_Start = as.factor(Hu_Start))
+
+cont_vars <- c("age", "hgb", "wbc", "anc", "platelet_count")
+cat_vars  <- c("gender", "hb_genotype", "Facility_name", "Hu_Start")
+
+table1 <- CreateTableOne(
+  vars       = c(cont_vars, cat_vars),
+  strata     = "Hu_Start",
+  data       = patient_df,
+  factorVars = cat_vars,
+  addOverall = TRUE
+)
+
+print(table1, showAllLevels = TRUE, smd = TRUE)
+```
+
+---
+
+# Final Column Inventory
+
+```{r col-inventory}
+data.frame(Column = names(df)) |>
+  mutate(Type = sapply(df, function(x) class(x)[1])) |>
+  knitr::kable()
+```
+
+---
+
+*Report generated automatically from `data_cleaning.r` output.*
+*Working dataset: `ML/data/hu_clean_data.csv`*

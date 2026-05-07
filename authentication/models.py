@@ -1,6 +1,11 @@
+import uuid
 from django.db import models
 from django.contrib.auth.models import BaseUserManager,PermissionsMixin,AbstractBaseUser
 from django.utils import timezone
+
+
+def generate_patient_id():
+    return "SCD-" + uuid.uuid4().hex[:8].upper()
 
 
 
@@ -59,7 +64,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     genotype = models.CharField(max_length=255, null=True, blank=True)
-    
+    patient_id = models.CharField(max_length=20, unique=True, blank=True, editable=False)
+
     date_joined = models.DateTimeField(default=timezone.now)
 
     objects = CustomUserManager()
@@ -73,6 +79,14 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         ordering = ["-date_joined"]
 
    
+
+    def save(self, *args, **kwargs):
+        if not self.patient_id:
+            patient_id = generate_patient_id()
+            while CustomUser.objects.filter(patient_id=patient_id).exists():
+                patient_id = generate_patient_id()
+            self.patient_id = patient_id
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.email

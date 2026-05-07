@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "skills": {
+    "evaluating-machine-learning-models": {
+      "source": "jeremylongshore/claude-code-plugins-plus-skills",
+      "sourceType": "github",
+      "skillPath": "plugins/ai-ml/model-evaluation-suite/skills/evaluating-machine-learning-models/SKILL.md",
+      "computedHash": "7d4fadf25fff0ef8f4110417c2003cb8138afffacab6d507806ab9d441fe0910"
+    },
+    "machine-learning": {
+      "source": "mindrally/skills",
+      "sourceType": "github",
+      "skillPath": "machine-learning/SKILL.md",
+      "computedHash": "b0fe8b1636aa174bda1bab2aa3e4d287adc1888d79011d938e1319aee8fc6763"
+    }
+  }
+}
