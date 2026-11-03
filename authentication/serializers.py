@@ -18,6 +18,14 @@ class RegisterSerializer(serializers.ModelSerializer):
         fields = ("patient_id", "email", "full_name", "date_of_birth", "gender", "phone_number", "password", "password2", "genotype")
         read_only_fields = ("patient_id",)
 
+    # Mirror CustomUserManager.create_user so these return 400 instead of a 500
+    def validate_password(self, value):
+        if not any(char.isdigit() for char in value):
+            raise serializers.ValidationError("Password must contain at least one digit")
+        if not any(char.isalpha() for char in value):
+            raise serializers.ValidationError("Password must contain at least one letter")
+        return value
+
     def validate(self, attrs):
         if attrs["password"] != attrs["password2"]:
             raise serializers.ValidationError({"password": "Password fields didn't match."})

@@ -1,3 +1,5 @@
+import logging
+
 from drf_spectacular.utils import OpenApiParameter, OpenApiResponse, extend_schema
 from rest_framework import permissions, status
 from rest_framework.response import Response
@@ -13,6 +15,8 @@ from .serializers import (
     PredictResponseSerializer,
 )
 from . import predictor
+
+logger = logging.getLogger(__name__)
 
 
 class HUBaselineView(APIView):
@@ -88,7 +92,7 @@ class PredictView(APIView):
                 ),
             ),
             404: OpenApiResponse(description='Visit not found or does not belong to this patient.'),
-            500: OpenApiResponse(description='Model inference failed — see detail field.'),
+            500: OpenApiResponse(description='Model inference failed.'),
         },
     )
     def post(self, request):
@@ -122,9 +126,10 @@ class PredictView(APIView):
 
         try:
             result = predictor.predict(visit, hu_baseline)
-        except Exception as exc:
+        except Exception:
+            logger.exception('Prediction failed for visit %s', visit.id)
             return Response(
-                {'detail': f'Prediction failed: {str(exc)}'},
+                {'detail': 'Prediction failed. Please try again later.'},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR,
             )
 

@@ -2,7 +2,7 @@ services:
   web:
     build: .
     ports:
-      - "8025:8025"
+      - "127.0.0.1:8025:8025"
     env_file:
       - .env
     restart: unless-stopped
