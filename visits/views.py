@@ -32,6 +32,8 @@ class VisitViewSet(viewsets.ModelViewSet):
             offset = int(request.query_params.get('offset', 0))
         except ValueError:
             return Response({'detail': 'limit and offset must be integers.'}, status=status.HTTP_400_BAD_REQUEST)
+        if offset < 0 or (limit is not None and limit < 0):
+            return Response({'detail': 'limit and offset must not be negative.'}, status=status.HTTP_400_BAD_REQUEST)
 
         total = queryset.count()
         page = queryset[offset:offset + limit] if limit is not None else queryset[offset:]
@@ -49,7 +51,7 @@ class VisitViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['get'])
     def trends(self, request):
         try:
-            days = max(1, int(request.query_params.get('days', 7)))
+            days = min(365, max(1, int(request.query_params.get('days', 7))))
         except ValueError:
             days = 7
 

@@ -5,13 +5,19 @@ from datetime import timedelta
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.environ.get("SECRET_KEY", "django-insecure-change-me-in-production")
-
 DEBUG = os.environ.get("DEBUG", "False") == "True"
+
+# Production must provide SECRET_KEY; the insecure fallback is for local DEBUG only
+if DEBUG:
+    SECRET_KEY = os.environ.get("SECRET_KEY", "django-insecure-change-me-in-production")
+else:
+    SECRET_KEY = os.environ["SECRET_KEY"]
 
 ALLOWED_HOSTS = ["*"]
 
 CORS_ALLOW_ALL_ORIGINS = True
+
+CSRF_TRUSTED_ORIGINS = ["https://mosquitosurveillancebackend.website"]
 
 
 INSTALLED_APPS = [
@@ -54,6 +60,15 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ],
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    # Anonymous limit guards login/register against brute force
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.AnonRateThrottle',
+        'rest_framework.throttling.UserRateThrottle',
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '20/min',
+        'user': '1000/hour',
+    },
 }
 
 
@@ -166,7 +181,10 @@ FORCE_SCRIPT_NAME = "/scd"
 
 STATIC_URL = "static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+STORAGES = {
+    "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
+    "staticfiles": {"BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"},
+}
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
@@ -179,8 +197,6 @@ if not DEBUG:
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
     SECURE_HSTS_SECONDS = 31536000
-    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-    SECURE_HSTS_PRELOAD = True
 
 # Render terminates SSL at the load balancer — Django must not redirect
 SECURE_SSL_REDIRECT = False

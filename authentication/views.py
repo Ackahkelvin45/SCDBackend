@@ -7,6 +7,7 @@ from rest_framework.decorators import action
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.exceptions import TokenError
+from rest_framework_simplejwt.token_blacklist.models import BlacklistedToken, OutstandingToken
 
 User = get_user_model()
 
@@ -38,7 +39,10 @@ class LoginView(TokenObtainPairView):
 
 
 class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
+    # Users can only ever see or change their own account; anyone else's id returns 404
+    def get_queryset(self):
+        return User.objects.filter(pk=self.request.user.pk)
+
     def get_serializer_class(self):
         if self.action == "create" or self.action == "register":
             return RegisterSerializer
@@ -59,10 +63,11 @@ class UserViewSet(viewsets.ModelViewSet):
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
     
 
-    def destroy(self, request):
+    def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
-        if instance != request.user:
-            return Response({"detail": "You can only delete your own account."}, status=status.HTTP_403_FORBIDDEN)
+        # Blacklist refresh tokens first, otherwise refreshing one after the delete 500s
+        for token in OutstandingToken.objects.filter(user=instance):
+            BlacklistedToken.objects.get_or_create(token=token)
         self.perform_destroy(instance)
         return Response(status=status.HTTP_204_NO_CONTENT)
     
