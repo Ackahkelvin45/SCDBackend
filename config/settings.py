@@ -69,6 +69,8 @@ REST_FRAMEWORK = {
         'anon': '20/min',
         'user': '1000/hour',
     },
+    # One nginx hop: identify clients by the IP nginx appends to X-Forwarded-For, not one they send
+    'NUM_PROXIES': 1,
 }
 
 
