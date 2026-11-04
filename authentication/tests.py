@@ -1,114 +1,126 @@
 from django.contrib.auth import get_user_model
+from django.core import mail
 from django.core.cache import cache
+from django.test import override_settings
 from rest_framework.test import APITestCase
 
+from .models import Facility
+
 User = get_user_model()
+PASSWORD = "passw0rd123"
 
 
-class UserScopingTests(APITestCase):
-    def setUp(self):
-        self.a = User.objects.create_user("a@example.com", "passw0rd123", full_name="A")
-        self.b = User.objects.create_user("b@example.com", "passw0rd123", full_name="B")
-        self.client.force_authenticate(self.a)
-
-    def test_list_shows_only_self(self):
-        res = self.client.get("/auth/users/")
-        self.assertEqual([u["email"] for u in res.json()], ["a@example.com"])
-
-    def test_cannot_touch_other_user(self):
-        url = f"/auth/users/{self.b.pk}/"
-        self.assertEqual(self.client.get(url).status_code, 404)
-        self.assertEqual(self.client.patch(url, {"full_name": "hacked"}).status_code, 404)
-        self.assertEqual(self.client.delete(url).status_code, 404)
-        self.b.refresh_from_db()
-        self.assertEqual(self.b.full_name, "B")
-
-    def test_can_delete_self(self):
-        self.assertEqual(self.client.delete(f"/auth/users/{self.a.pk}/").status_code, 204)
-
-    def test_register_still_public(self):
-        self.client.force_authenticate(None)
-        res = self.client.post("/auth/users/", {
-            "email": "c@example.com", "full_name": "C",
-            "password": "Str0ngPassw0rd!", "password2": "Str0ngPassw0rd!",
-        })
-        self.assertEqual(res.status_code, 201)
-
-    def test_put_self_and_other(self):
-        data = {"email": "a@example.com", "full_name": "A2"}
-        self.assertEqual(self.client.put(f"/auth/users/{self.a.pk}/", data).status_code, 200)
-        self.assertEqual(self.client.put(f"/auth/users/{self.b.pk}/", data).status_code, 404)
-
-    def test_me_returns_self_and_patch_ignores_protected_fields(self):
-        self.assertEqual(self.client.get("/auth/users/me/").json()["email"], "a@example.com")
-        patient_id = self.a.patient_id
-        res = self.client.patch("/auth/users/me/", {
-            "full_name": "A2", "is_staff": True, "is_superuser": True,
-            "patient_id": "SCD-HACKED", "password": "newpassw0rd",
-        })
-        self.assertEqual(res.status_code, 200)
-        self.a.refresh_from_db()
-        self.assertEqual(self.a.full_name, "A2")
-        self.assertFalse(self.a.is_staff)
-        self.assertFalse(self.a.is_superuser)
-        self.assertEqual(self.a.patient_id, patient_id)
-        self.assertTrue(self.a.check_password("passw0rd123"))
-
-    def test_unauthenticated_gets_401(self):
-        self.client.force_authenticate(None)
-        for url in ["/auth/users/", "/auth/users/me/", f"/auth/users/{self.a.pk}/"]:
-            self.assertEqual(self.client.get(url).status_code, 401)
-
-
-class RegisterTests(APITestCase):
+class AuthTests(APITestCase):
     def setUp(self):
         cache.clear()  # anon throttle state lives in the cache
+        self.facility = Facility.objects.create(name="Komfo Anokye", region="Ashanti", prediction_enabled=True)
+        self.user = User.objects.create_user("doc@example.com", PASSWORD, full_name="Dr A", facility=self.facility,
+                                             license_number="MDC/1", phone_number="0240000000")
 
-    def register(self, **extra):
-        data = {"email": "c@example.com", "full_name": "C",
-                "password": "Str0ngPassw0rd!", "password2": "Str0ngPassw0rd!"}
+    def signup(self, **extra):
+        data = {"full_name": "Dr B", "email": "b@example.com", "phone_number": "0241111111", "license_number": "MDC/2",
+                "facility_id": str(self.facility.pk), "password": "Str0ngPassw0rd!", "password2": "Str0ngPassw0rd!"}
         data.update(extra)
         return self.client.post("/auth/users/", data)
 
-    def test_register_ignores_privilege_fields(self):
-        res = self.register(is_staff=True, is_superuser=True)
+    def login(self, email="doc@example.com", password=PASSWORD):
+        return self.client.post("/auth/login/", {"email": email, "password": password})
+
+    def test_signup_returns_clinician_and_can_log_in(self):
+        res = self.signup(is_staff=True, genotype="HbSS")
         self.assertEqual(res.status_code, 201)
-        self.assertTrue(res.json()["patient_id"])
-        self.assertNotIn("password", res.json())
-        user = User.objects.get(email="c@example.com")
-        self.assertFalse(user.is_staff)
-        self.assertFalse(user.is_superuser)
+        body = res.json()
+        self.assertEqual(body["status"], "active")
+        self.assertEqual(body["facility"], {"id": str(self.facility.pk), "name": "Komfo Anokye", "region": "Ashanti",
+                                            "prediction_enabled": True})
+        self.assertNotIn("password", body)
+        self.assertFalse(User.objects.get(email="b@example.com").is_staff)
+        self.assertEqual(self.login("b@example.com", "Str0ngPassw0rd!").status_code, 200)
 
-    def test_mismatched_passwords(self):
-        self.assertEqual(self.register(password2="Other0ne!!").status_code, 400)
-
-    def test_password_without_digit(self):
-        res = self.register(password="NoDigitsHere!", password2="NoDigitsHere!")
+    def test_signup_errors_use_one_shape(self):
+        res = self.signup(password2="Different1!", facility_id="00000000-0000-0000-0000-000000000000")
         self.assertEqual(res.status_code, 400)
-        self.assertIn("password", res.json())
+        body = res.json()
+        self.assertEqual(body["code"], "invalid")
+        self.assertIn("facility_id", body["fields"])
+        self.assertIsInstance(body["fields"]["facility_id"], list)
 
+    def test_signup_rejects_duplicate_email_any_case_and_weak_password(self):
+        self.assertIn("email", self.signup(email="DOC@example.com").json()["fields"])
+        self.assertIn("password", self.signup(password="NoDigitsHere!", password2="NoDigitsHere!").json()["fields"])
 
-class TokenTests(APITestCase):
-    def setUp(self):
-        cache.clear()
-        self.user = User.objects.create_user("a@example.com", "passw0rd123", full_name="A")
-        res = self.client.post("/auth/login/", {"email": "a@example.com", "password": "passw0rd123"})
-        self.access, self.refresh = res.json()["access"], res.json()["refresh"]
-
-    def test_refresh_then_logout_rejects_old_refresh(self):
-        res = self.client.post("/auth/refresh/", {"refresh": self.refresh})
+    def test_login_includes_user_and_email_is_case_insensitive(self):
+        res = self.login("Doc@Example.com")
         self.assertEqual(res.status_code, 200)
-        new_refresh = res.json()["refresh"]
-        self.assertEqual(self.client.post("/auth/logout/", {"refresh": new_refresh}).status_code, 205)
-        self.assertEqual(self.client.post("/auth/refresh/", {"refresh": new_refresh}).status_code, 401)
+        self.assertEqual(set(res.json()), {"access", "refresh", "user"})
+        self.assertEqual(res.json()["user"]["license_number"], "MDC/1")
 
-    def test_rotated_refresh_cannot_be_reused(self):
-        self.assertEqual(self.client.post("/auth/refresh/", {"refresh": self.refresh}).status_code, 200)
-        self.assertEqual(self.client.post("/auth/refresh/", {"refresh": self.refresh}).status_code, 401)
+    def test_wrong_password_is_401_with_code(self):
+        res = self.login(password="wrong")
+        self.assertEqual(res.status_code, 401)
+        self.assertEqual(set(res.json()), {"detail", "code", "fields"})
 
-    def test_tokens_rejected_after_self_delete(self):
-        self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {self.access}")
-        self.assertEqual(self.client.delete(f"/auth/users/{self.user.pk}/").status_code, 204)
-        self.assertEqual(self.client.get("/auth/users/me/").status_code, 401)
-        self.client.credentials()
-        self.assertEqual(self.client.post("/auth/refresh/", {"refresh": self.refresh}).status_code, 401)
+    def test_deactivated_account(self):
+        refresh = self.login().json()["refresh"]
+        self.user.is_active = False
+        self.user.save()
+        res = self.login()
+        self.assertEqual(res.status_code, 403)
+        self.assertEqual(res.json()["code"], "account_deactivated")
+        self.assertEqual(self.client.post("/auth/refresh/", {"refresh": refresh}).status_code, 401)
+        # A wrong password doesn't reveal that the account exists
+        self.assertEqual(self.login(password="wrong").status_code, 401)
+
+    def test_me_get_and_patch_only_name_and_phone(self):
+        self.client.force_authenticate(self.user)
+        self.assertEqual(self.client.get("/auth/users/me/").json()["email"], "doc@example.com")
+        res = self.client.patch("/auth/users/me/", {"full_name": "Dr A2", "phone_number": "0249999999",
+                                                    "license_number": "HACK", "is_staff": True, "email": "x@x.com"})
+        self.assertEqual(res.status_code, 200)
+        self.user.refresh_from_db()
+        self.assertEqual((self.user.full_name, self.user.phone_number), ("Dr A2", "0249999999"))
+        self.assertEqual((self.user.license_number, self.user.is_staff, self.user.email), ("MDC/1", False, "doc@example.com"))
+
+    def test_password_change(self):
+        self.client.force_authenticate(self.user)
+        bad = self.client.post("/auth/password/change/", {"old_password": "nope", "new_password": "NewPassw0rd!",
+                                                          "new_password2": "NewPassw0rd!"})
+        self.assertIn("old_password", bad.json()["fields"])
+        ok = self.client.post("/auth/password/change/", {"old_password": PASSWORD, "new_password": "NewPassw0rd!",
+                                                         "new_password2": "NewPassw0rd!"})
+        self.assertEqual(ok.status_code, 200)
+        self.user.refresh_from_db()
+        self.assertTrue(self.user.check_password("NewPassw0rd!"))
+
+    def test_password_change_ends_other_sessions(self):
+        refresh = self.login().json()["refresh"]
+        self.client.force_authenticate(self.user)
+        res = self.client.post("/auth/password/change/", {"old_password": PASSWORD, "new_password": "NewPassw0rd!",
+                                                          "new_password2": "NewPassw0rd!"})
+        self.assertEqual(res.json(), {"detail": "Password changed."})
+        self.client.force_authenticate(None)
+        self.assertEqual(self.client.post("/auth/refresh/", {"refresh": refresh}).status_code, 401)
+
+    def test_non_object_body_is_400(self):
+        for url in ["/auth/login/", "/auth/logout/"]:
+            res = self.client.post(url, ["x"], format="json")
+            self.assertEqual(res.status_code, 400, url)
+            self.assertEqual(set(res.json()), {"detail", "code", "fields"})
+
+    def test_refresh_rotation_and_logout(self):
+        refresh = self.login().json()["refresh"]
+        new = self.client.post("/auth/refresh/", {"refresh": refresh}).json()["refresh"]
+        self.assertEqual(self.client.post("/auth/refresh/", {"refresh": refresh}).status_code, 401)
+        self.assertEqual(self.client.post("/auth/logout/", {"refresh": new}).status_code, 205)
+        self.assertEqual(self.client.post("/auth/refresh/", {"refresh": new}).status_code, 401)
+
+    @override_settings(STORAGES={"default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
+                                 "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"}})
+    def test_password_reset_page_exists_and_sends_email(self):
+        self.assertEqual(self.client.get("/accounts/password_reset/").status_code, 200)
+        self.client.post("/accounts/password_reset/", {"email": "doc@example.com"})
+        self.assertEqual(len(mail.outbox), 1)
+
+    def test_unauthenticated_requests_are_401(self):
+        for url in ["/auth/users/me/", "/patients/", "/flags/", "/config/", "/clinicians/"]:
+            self.assertEqual(self.client.get(url).status_code, 401, url)

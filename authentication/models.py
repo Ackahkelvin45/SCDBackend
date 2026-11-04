@@ -1,14 +1,25 @@
 import uuid
 from django.db import models
-from django.contrib.auth.models import BaseUserManager,PermissionsMixin,AbstractBaseUser
+from django.contrib.auth.models import BaseUserManager, PermissionsMixin, AbstractBaseUser
 from django.utils import timezone
+from simple_history.models import HistoricalRecords
 
 
-def generate_patient_id():
-    return "SCD-" + uuid.uuid4().hex[:8].upper()
+class Facility(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(max_length=255, unique=True)
+    region = models.CharField(max_length=100, blank=True)
+    # Prediction stays off until the ML owner confirms the ARC unit and ethics approval is recorded
+    prediction_enabled = models.BooleanField(default=False)
 
+    history = HistoricalRecords()
 
+    class Meta:
+        verbose_name_plural = "Facilities"
+        ordering = ["name"]
 
+    def __str__(self):
+        return self.name
 
 
 class CustomUserManager(BaseUserManager):
@@ -42,29 +53,19 @@ class CustomUserManager(BaseUserManager):
             raise ValueError("Superuser must have is_superuser=True.")
 
         return self.create_user(email, password, **extra_fields)
-    
-
-
-
-class GenderChoices(models.TextChoices):
-    MALE = "male"
-    FEMALE = "female"
-    OTHER = "other"
-    NOT_SPECIFIED = "not_specified"
-
-
 
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
+    """A clinician. Patients never log in; they are records in the clinic app."""
     email = models.EmailField(unique=True)
     full_name = models.CharField(max_length=255)
-    date_of_birth = models.DateField(null=True, blank=True)
-    gender = models.CharField(max_length=20, choices=GenderChoices.choices, default=GenderChoices.NOT_SPECIFIED)
-    phone_number = models.CharField(max_length=20, null=True, blank=True)
+    phone_number = models.CharField(max_length=20, blank=True)
+    license_number = models.CharField(max_length=50, blank=True)
+    # Null only for staff/admin accounts; clinicians always belong to a facility
+    facility = models.ForeignKey(Facility, on_delete=models.PROTECT, null=True, blank=True, related_name="clinicians")
+    # Deactivating takes effect at once: access tokens and refreshes are refused for inactive users
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
-    genotype = models.CharField(max_length=255, null=True, blank=True)
-    patient_id = models.CharField(max_length=20, unique=True, blank=True, editable=False)
 
     date_joined = models.DateTimeField(default=timezone.now)
 
@@ -74,19 +75,13 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = []
 
     class Meta:
-        verbose_name = "User"
-        verbose_name_plural = "Users"
+        verbose_name = "Clinician"
+        verbose_name_plural = "Clinicians"
         ordering = ["-date_joined"]
 
-   
-
-    def save(self, *args, **kwargs):
-        if not self.patient_id:
-            patient_id = generate_patient_id()
-            while CustomUser.objects.filter(patient_id=patient_id).exists():
-                patient_id = generate_patient_id()
-            self.patient_id = patient_id
-        super().save(*args, **kwargs)
+    @property
+    def status(self):
+        return "active" if self.is_active else "deactivated"
 
     def __str__(self):
         return self.email
