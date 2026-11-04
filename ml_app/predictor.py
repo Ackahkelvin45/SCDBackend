@@ -1,85 +1,82 @@
 """
-Loads the trained XGBoost pipeline and constructs the feature vector from a Visit + patient record.
+Loads the trained pipelines listed in settings.PREDICTION_MODELS and builds the feature vector
+from a Visit + Patient + HU baseline.
 
 Feature order (must match training):
   age, gender_encoded, hb_genotype_encoded, baseline_hgb,
   prev_hgb, prev_anc, prev_arc, prev_platelet_count,
   prev_wbc, prev_rbc, prev_mcv, prev_hct, prev_days_on_hu
+
+Each pipeline has its own median imputer, so missing labs are filled the same way as in training.
 """
+import hashlib
 from pathlib import Path
-import numpy as np
+
 import joblib
+import numpy as np
+from django.conf import settings
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+_OUTPUTS = BASE_DIR / 'ML' / 'outputs'
 
-_MODEL_PATH = BASE_DIR / 'ML' / 'outputs' / 'xgboost.pkl'
-_THRESHOLD_PATH = BASE_DIR / 'ML' / 'outputs' / 'best_thresholds.pkl'
-
-_model = None
+_models = {}
+_hashes = {}
 _thresholds = None
-
-
-def _load_artifacts():
-    global _model, _thresholds
-    if _model is None:
-        _model = joblib.load(_MODEL_PATH)
-    if _thresholds is None:
-        _thresholds = joblib.load(_THRESHOLD_PATH)
-
 
 GENDER_MAP = {
     'male': 0.0,
     'female': 1.0,
 }
 
+# Training vocabulary was ss/sc/sbo/dont_know → 0–3. HbSβ+ never appeared in training and shares
+# the "unknown" code. [CONFIRM with the ML owner]; other/unknown genotypes are blocked by eligibility.
 GENOTYPE_MAP = {
     'HbSS': 0.0,
     'HbSC': 1.0,
     'HbSβ0': 2.0,
     'HbSβ+': 3.0,
-    'not_sure': 3.0,
 }
 
-
-def _compute_age(date_of_birth, reference_date):
-    if date_of_birth is None:
-        return np.nan
-    delta = reference_date - date_of_birth
-    return delta.days / 365.25
+LAB_FIELDS = ['hgb', 'anc', 'arc', 'platelet_count', 'wbc', 'rbc', 'mcv', 'hct']
 
 
-def _encode_gender(gender):
-    return GENDER_MAP.get(gender, np.nan)
+def _spec(model_id):
+    return next(m for m in settings.PREDICTION_MODELS if m['id'] == model_id)
 
 
-def _encode_genotype(genotype):
-    if genotype is None:
-        return np.nan
-    return GENOTYPE_MAP.get(genotype, np.nan)
+def model_hash(model_id):
+    if model_id not in _hashes:
+        digest = hashlib.sha256((_OUTPUTS / _spec(model_id)['file']).read_bytes()).hexdigest()
+        _hashes[model_id] = f'sha256:{digest}'
+    return _hashes[model_id]
+
+
+def threshold(model_id):
+    global _thresholds
+    if _thresholds is None:
+        _thresholds = joblib.load(_OUTPUTS / 'best_thresholds.pkl')
+    return float(_thresholds[_spec(model_id)['threshold_key']]['Best F1'])
+
+
+def _model(model_id):
+    if model_id not in _models:
+        _models[model_id] = joblib.load(_OUTPUTS / _spec(model_id)['file'])
+    return _models[model_id]
 
 
 def _to_float(value):
-    if value is None:
-        return np.nan
-    return float(value)
+    return np.nan if value is None else float(value)
 
 
-def build_feature_vector(visit, hu_baseline):
+def build_feature_vector(visit, baseline):
     patient = visit.patient
-    visit_date = visit.visit_date
-    hu_start_date = hu_baseline.hu_start_date
-
-    age = _compute_age(patient.date_of_birth, visit_date)
-    gender_encoded = _encode_gender(patient.gender)
-    genotype_encoded = _encode_genotype(patient.genotype)
-    baseline_hgb = _to_float(hu_baseline.baseline_hgb)
-    prev_days_on_hu = float((visit_date - hu_start_date).days)
-
-    features = np.array([[
+    lab_date = visit.lab_sample_date
+    age = (lab_date - patient.date_of_birth).days / 365.25
+    return np.array([[
         age,
-        gender_encoded,
-        genotype_encoded,
-        baseline_hgb,
+        GENDER_MAP.get(patient.sex, np.nan),
+        GENOTYPE_MAP.get(patient.genotype, np.nan),
+        _to_float(baseline.baseline_hgb),
         _to_float(visit.hgb),
         _to_float(visit.anc),
         _to_float(visit.arc),
@@ -88,26 +85,17 @@ def build_feature_vector(visit, hu_baseline):
         _to_float(visit.rbc),
         _to_float(visit.mcv),
         _to_float(visit.hct),
-        prev_days_on_hu,
+        float((lab_date - baseline.hu_start_date).days),
     ]], dtype=float)
 
-    return features
 
-
-def predict(visit, hu_baseline, threshold_type='Best F1'):
-    _load_artifacts()
-
-    features = build_feature_vector(visit, hu_baseline)
-    probability = float(_model.predict_proba(features)[0][1])
-
-    threshold = _thresholds['XGBoost'][threshold_type]
-    predicted_class = 'responder' if probability >= threshold else 'non_responder'
-
+def predict_one(model_id, features):
+    """Probability of response for one model. Raises on any load/inference failure; the caller handles it."""
+    probability = float(_model(model_id).predict_proba(features)[0][1])
+    cut = threshold(model_id)
     return {
         'response_probability': round(probability, 4),
-        'predicted_class': predicted_class,
-        'model_version': '1.0',
-        'target_definition': 'hgb improvement >= 1.0 g/dL from HU baseline at next eligible visit',
-        'threshold': round(threshold, 4),
-        'threshold_type': threshold_type,
+        'predicted_class': 'responder' if probability >= cut else 'non_responder',
+        'threshold': round(cut, 4),
+        'model_hash': model_hash(model_id),
     }
