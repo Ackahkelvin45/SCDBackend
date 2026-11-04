@@ -70,7 +70,10 @@ class LookupTests(ClinicTestCase):
         self.client.force_authenticate(None)
         res = self.client.get('/facilities/')
         self.assertEqual(res.status_code, 200)
-        self.assertEqual([f['name'] for f in res.json()], ['Komfo Anokye', 'Korle Bu'])
+        names = [f['name'] for f in res.json()]
+        self.assertEqual(names, sorted(names))
+        self.assertEqual(len(names), 78 + 2)  # seeded list + this test's two
+        self.assertIn('Tamale Teaching Hospital', names)
         self.assertEqual(set(res.json()[0]), {'id', 'name', 'region'})
 
     def test_clinicians_only_my_facility(self):
