@@ -1,0 +1,2587 @@
+[
+ {
+  "folder_number": "DEMO-001",
+  "full_name": "Kofi Mensah",
+  "case_id": "8fad285f-43a1-4fd0-a64a-fd7e38c3e33e",
+  "sex": "male",
+  "date_of_birth": "2016-05-28",
+  "genotype": "HbSS",
+  "baseline_hgb": 7.2,
+  "hu_start_date": "2022-04-04",
+  "visits": [
+   {
+    "lab_sample_date": "2022-04-04",
+    "hgb": 7.2,
+    "anc": 3.99,
+    "arc": 13.5,
+    "platelet_count": 85.0,
+    "wbc": 9.2,
+    "rbc": 2.8,
+    "mcv": 75.4,
+    "hct": 21.2
+   },
+   {
+    "lab_sample_date": "2022-05-06",
+    "hgb": 9.8,
+    "anc": 2.06,
+    "arc": 0.2,
+    "platelet_count": 149.0,
+    "wbc": 5.39,
+    "rbc": 3.53,
+    "mcv": 74.2,
+    "hct": 26.2
+   },
+   {
+    "lab_sample_date": "2022-06-27",
+    "hgb": 10.8,
+    "anc": 3.8,
+    "arc": 0.2,
+    "platelet_count": 193.0,
+    "wbc": 6.74,
+    "rbc": 3.81,
+    "mcv": 77.4,
+    "hct": 29.5
+   },
+   {
+    "lab_sample_date": "2022-09-21",
+    "hgb": 11.5,
+    "anc": 1.87,
+    "arc": 0.2,
+    "platelet_count": 197.0,
+    "wbc": 4.46,
+    "rbc": 3.87,
+    "mcv": 81.9,
+    "hct": 31.7
+   },
+   {
+    "lab_sample_date": "2022-11-21",
+    "hgb": 11.5,
+    "anc": 3.84,
+    "arc": 0.0,
+    "platelet_count": 343.0,
+    "wbc": 6.73,
+    "rbc": 3.96,
+    "mcv": 80.0,
+    "hct": 32.0
+   },
+   {
+    "lab_sample_date": "2023-01-30",
+    "hgb": 10.6,
+    "anc": 2.71,
+    "arc": 0.2,
+    "platelet_count": 329.0,
+    "wbc": 4.88,
+    "rbc": 3.8,
+    "mcv": 78.4,
+    "hct": 29.8
+   },
+   {
+    "lab_sample_date": "2023-05-08",
+    "hgb": 9.3,
+    "anc": 2.88,
+    "arc": 0.2,
+    "platelet_count": 229.0,
+    "wbc": 6.1,
+    "rbc": 3.41,
+    "mcv": 78.9,
+    "hct": 26.9
+   }
+  ],
+  "expected": {
+   "observed_responder_at_last_visit": true,
+   "xgboost": {
+    "probability": 0.923,
+    "threshold": 0.5720930695533752,
+    "predicted_class": "responder",
+    "correct": true
+   },
+   "svm": {
+    "probability": 0.951,
+    "threshold": 0.3093646968130433,
+    "predicted_class": "responder",
+    "correct": true
+   },
+   "logistic_reg": {
+    "probability": 0.982,
+    "threshold": 0.6775965203998927,
+    "predicted_class": "responder",
+    "correct": true
+   }
+  }
+ },
+ {
+  "folder_number": "DEMO-002",
+  "full_name": "Ama Owusu",
+  "case_id": "e72f80e8-d4e2-4457-b830-5f47a7feb6fb",
+  "sex": "female",
+  "date_of_birth": "2014-12-10",
+  "genotype": "HbSS",
+  "baseline_hgb": 8.4,
+  "hu_start_date": "2022-07-04",
+  "visits": [
+   {
+    "lab_sample_date": "2022-07-04",
+    "hgb": 8.4,
+    "anc": 6.06,
+    "arc": 0.2,
+    "platelet_count": 137.0,
+    "wbc": 9.72,
+    "rbc": 3.1,
+    "mcv": 77.4,
+    "hct": 24.0
+   },
+   {
+    "lab_sample_date": "2022-07-30",
+    "hgb": 9.8,
+    "anc": 4.16,
+    "arc": 0.2,
+    "platelet_count": 124.0,
+    "wbc": 7.81,
+    "rbc": 3.31,
+    "mcv": 82.8,
+    "hct": 27.4
+   },
+   {
+    "lab_sample_date": "2022-08-27",
+    "hgb": 10.0,
+    "anc": 4.46,
+    "arc": 0.2,
+    "platelet_count": 155.0,
+    "wbc": 8.06,
+    "rbc": 3.4,
+    "mcv": 84.7,
+    "hct": 28.8
+   },
+   {
+    "lab_sample_date": "2022-11-21",
+    "hgb": 10.7,
+    "anc": 2.09,
+    "arc": 0.0,
+    "platelet_count": 249.0,
+    "wbc": 4.74,
+    "rbc": 3.54,
+    "mcv": 85.0,
+    "hct": 30.1
+   },
+   {
+    "lab_sample_date": "2023-02-11",
+    "hgb": 10.5,
+    "anc": 2.03,
+    "arc": 0.0,
+    "platelet_count": 278.0,
+    "wbc": 3.97,
+    "rbc": 3.54,
+    "mcv": 83.3,
+    "hct": 29.5
+   },
+   {
+    "lab_sample_date": "2023-05-08",
+    "hgb": 10.5,
+    "anc": 2.14,
+    "arc": 0.0,
+    "platelet_count": 254.0,
+    "wbc": 4.78,
+    "rbc": 3.72,
+    "mcv": 84.5,
+    "hct": 30.3
+   }
+  ],
+  "expected": {
+   "observed_responder_at_last_visit": true,
+   "xgboost": {
+    "probability": 0.864,
+    "threshold": 0.5720930695533752,
+    "predicted_class": "responder",
+    "correct": true
+   },
+   "svm": {
+    "probability": 0.722,
+    "threshold": 0.3093646968130433,
+    "predicted_class": "responder",
+    "correct": true
+   },
+   "logistic_reg": {
+    "probability": 0.866,
+    "threshold": 0.6775965203998927,
+    "predicted_class": "responder",
+    "correct": true
+   }
+  }
+ },
+ {
+  "folder_number": "DEMO-003",
+  "full_name": "Yaw Boateng",
+  "case_id": "a8f213a9-de24-44f4-8a7e-d24ca7dd8af0",
+  "sex": "male",
+  "date_of_birth": "2018-08-10",
+  "genotype": "HbSS",
+  "baseline_hgb": 7.4,
+  "hu_start_date": "2021-10-06",
+  "visits": [
+   {
+    "lab_sample_date": "2021-10-06",
+    "hgb": 7.4,
+    "anc": 8.98,
+    "arc": 0.3,
+    "platelet_count": 136.0,
+    "wbc": 20.4,
+    "rbc": 2.56,
+    "mcv": 83.6,
+    "hct": 21.4
+   },
+   {
+    "lab_sample_date": "2021-11-17",
+    "hgb": 9.0,
+    "anc": 3.08,
+    "arc": 0.3,
+    "platelet_count": 249.0,
+    "wbc": 16.41,
+    "rbc": 3.07,
+    "mcv": 86.3,
+    "hct": 26.5
+   },
+   {
+    "lab_sample_date": "2022-02-15",
+    "hgb": 8.7,
+    "anc": 6.39,
+    "arc": 3.7,
+    "platelet_count": 291.0,
+    "wbc": 9.3,
+    "rbc": 2.5,
+    "mcv": 97.6,
+    "hct": 24.0
+   },
+   {
+    "lab_sample_date": "2022-02-15",
+    "hgb": 8.5,
+    "anc": 5.23,
+    "arc": 10.6,
+    "platelet_count": 131.0,
+    "wbc": 19.5,
+    "rbc": 2.9,
+    "mcv": 87.5,
+    "hct": 25.1
+   },
+   {
+    "lab_sample_date": "2022-04-11",
+    "hgb": 8.7,
+    "anc": 2.18,
+    "arc": 5.9,
+    "platelet_count": 264.0,
+    "wbc": 13.7,
+    "rbc": 2.8,
+    "mcv": 89.1,
+    "hct": 24.6
+   },
+   {
+    "lab_sample_date": "2022-05-10",
+    "hgb": 9.4,
+    "anc": 4.86,
+    "arc": 0.2,
+    "platelet_count": 152.0,
+    "wbc": 15.09,
+    "rbc": 2.89,
+    "mcv": 87.5,
+    "hct": 25.3
+   },
+   {
+    "lab_sample_date": "2022-07-27",
+    "hgb": 8.0,
+    "anc": 2.25,
+    "arc": 0.1,
+    "platelet_count": 83.0,
+    "wbc": 7.16,
+    "rbc": 2.53,
+    "mcv": 88.1,
+    "hct": 22.3
+   },
+   {
+    "lab_sample_date": "2022-10-05",
+    "hgb": 9.6,
+    "anc": 2.65,
+    "arc": 0.1,
+    "platelet_count": 147.0,
+    "wbc": 7.9,
+    "rbc": 3.04,
+    "mcv": 88.8,
+    "hct": 27.0
+   },
+   {
+    "lab_sample_date": "2023-01-12",
+    "hgb": 9.6,
+    "anc": 3.11,
+    "arc": 0.2,
+    "platelet_count": 214.0,
+    "wbc": 6.97,
+    "rbc": 3.05,
+    "mcv": 88.9,
+    "hct": 27.1
+   },
+   {
+    "lab_sample_date": "2023-04-13",
+    "hgb": 8.6,
+    "anc": 2.08,
+    "arc": 0.1,
+    "platelet_count": 275.0,
+    "wbc": 6.2,
+    "rbc": 2.68,
+    "mcv": 89.9,
+    "hct": 24.1
+   },
+   {
+    "lab_sample_date": "2023-05-11",
+    "hgb": 9.6,
+    "anc": 1.81,
+    "arc": 0.0,
+    "platelet_count": 203.0,
+    "wbc": 7.29,
+    "rbc": 3.12,
+    "mcv": 89.4,
+    "hct": 27.9
+   }
+  ],
+  "expected": {
+   "observed_responder_at_last_visit": true,
+   "xgboost": {
+    "probability": 0.847,
+    "threshold": 0.5720930695533752,
+    "predicted_class": "responder",
+    "correct": true
+   },
+   "svm": {
+    "probability": 0.571,
+    "threshold": 0.3093646968130433,
+    "predicted_class": "responder",
+    "correct": true
+   },
+   "logistic_reg": {
+    "probability": 0.788,
+    "threshold": 0.6775965203998927,
+    "predicted_class": "responder",
+    "correct": true
+   }
+  }
+ },
+ {
+  "folder_number": "DEMO-004",
+  "full_name": "Akosua Asante",
+  "case_id": "5e6be347-8d8c-4611-8036-7de308853fd1",
+  "sex": "male",
+  "date_of_birth": "2009-04-15",
+  "genotype": "HbSS",
+  "baseline_hgb": 8.3,
+  "hu_start_date": "2021-08-04",
+  "visits": [
+   {
+    "lab_sample_date": "2021-08-04",
+    "hgb": 8.3,
+    "anc": 1.28,
+    "arc": 0.2,
+    "platelet_count": 324.0,
+    "wbc": 6.71,
+    "rbc": 2.5,
+    "mcv": 89.2,
+    "hct": 22.3
+   },
+   {
+    "lab_sample_date": "2021-10-27",
+    "hgb": 9.8,
+    "anc": 2.8,
+    "arc": 3.3,
+    "platelet_count": 439.0,
+    "wbc": 7.11,
+    "rbc": 2.9,
+    "mcv": 93.4,
+    "hct": 27.1
+   },
+   {
+    "lab_sample_date": "2021-11-17",
+    "hgb": 10.1,
+    "anc": 2.26,
+    "arc": 0.2,
+    "platelet_count": 560.0,
+    "wbc": 7.36,
+    "rbc": 3.03,
+    "mcv": 94.1,
+    "hct": 28.5
+   },
+   {
+    "lab_sample_date": "2022-02-08",
+    "hgb": 10.7,
+    "anc": 0.97,
+    "arc": 3.7,
+    "platelet_count": 448.0,
+    "wbc": 5.7,
+    "rbc": 2.8,
+    "mcv": 102.9,
+    "hct": 28.5
+   },
+   {
+    "lab_sample_date": "2022-05-03",
+    "hgb": 11.0,
+    "anc": 0.85,
+    "arc": 0.1,
+    "platelet_count": 329.0,
+    "wbc": 4.55,
+    "rbc": 2.59,
+    "mcv": 110.0,
+    "hct": 28.5
+   },
+   {
+    "lab_sample_date": "2022-05-20",
+    "hgb": 11.1,
+    "anc": 1.66,
+    "arc": 0.1,
+    "platelet_count": 239.0,
+    "wbc": 5.31,
+    "rbc": 2.67,
+    "mcv": 109.0,
+    "hct": 29.1
+   },
+   {
+    "lab_sample_date": "2022-07-14",
+    "hgb": 10.9,
+    "anc": 1.26,
+    "arc": 0.1,
+    "platelet_count": 349.0,
+    "wbc": 6.08,
+    "rbc": 2.68,
+    "mcv": 107.8,
+    "hct": 28.9
+   },
+   {
+    "lab_sample_date": "2022-10-10",
+    "hgb": 11.0,
+    "anc": 1.33,
+    "arc": 0.1,
+    "platelet_count": 382.0,
+    "wbc": 6.06,
+    "rbc": 2.92,
+    "mcv": 101.4,
+    "hct": 29.6
+   },
+   {
+    "lab_sample_date": "2023-01-26",
+    "hgb": 10.0,
+    "anc": 1.9,
+    "arc": 0.2,
+    "platelet_count": 396.0,
+    "wbc": 7.3,
+    "rbc": 2.84,
+    "mcv": 97.9,
+    "hct": 27.8
+   },
+   {
+    "lab_sample_date": "2023-04-20",
+    "hgb": 10.9,
+    "anc": 0.14,
+    "arc": 0.1,
+    "platelet_count": 437.0,
+    "wbc": 6.32,
+    "rbc": 2.98,
+    "mcv": 100.7,
+    "hct": 30.0
+   }
+  ],
+  "expected": {
+   "observed_responder_at_last_visit": true,
+   "xgboost": {
+    "probability": 0.795,
+    "threshold": 0.5720930695533752,
+    "predicted_class": "responder",
+    "correct": true
+   },
+   "svm": {
+    "probability": 0.572,
+    "threshold": 0.3093646968130433,
+    "predicted_class": "responder",
+    "correct": true
+   },
+   "logistic_reg": {
+    "probability": 0.777,
+    "threshold": 0.6775965203998927,
+    "predicted_class": "responder",
+    "correct": true
+   }
+  }
+ },
+ {
+  "folder_number": "DEMO-005",
+  "full_name": "Kwame Darko",
+  "case_id": "f46df78a-a5e9-4d87-ad23-f2c8e40d662c",
+  "sex": "female",
+  "date_of_birth": "2014-10-23",
+  "genotype": "HbSS",
+  "baseline_hgb": 6.6,
+  "hu_start_date": "2021-03-10",
+  "visits": [
+   {
+    "lab_sample_date": "2021-03-10",
+    "hgb": 6.6,
+    "anc": 1.76,
+    "arc": 2.8,
+    "platelet_count": 235.0,
+    "wbc": 4.6,
+    "rbc": 3.01,
+    "mcv": 70.0,
+    "hct": 24.0
+   },
+   {
+    "lab_sample_date": "2021-03-24",
+    "hgb": 7.2,
+    "anc": 2.77,
+    "arc": 6.1,
+    "platelet_count": 260.0,
+    "wbc": 6.4,
+    "rbc": 3.38,
+    "mcv": 69.0,
+    "hct": 0.2
+   },
+   {
+    "lab_sample_date": "2021-04-20",
+    "hgb": 7.5,
+    "anc": 1.35,
+    "arc": 3.2,
+    "platelet_count": 106.0,
+    "wbc": 5.2,
+    "rbc": 3.45,
+    "mcv": 67.0,
+    "hct": 0.2
+   },
+   {
+    "lab_sample_date": "2021-05-25",
+    "hgb": 8.0,
+    "anc": 1.26,
+    "arc": 1.7,
+    "platelet_count": 87.0,
+    "wbc": 4.4,
+    "rbc": 3.42,
+    "mcv": 71.0,
+    "hct": 24.0
+   },
+   {
+    "lab_sample_date": "2021-08-23",
+    "hgb": 7.8,
+    "anc": 2.31,
+    "arc": 1.9,
+    "platelet_count": 113.0,
+    "wbc": 5.4,
+    "rbc": 3.33,
+    "mcv": 68.0,
+    "hct": 0.2
+   },
+   {
+    "lab_sample_date": "2022-01-13",
+    "hgb": 8.7,
+    "anc": 5.47,
+    "arc": 4.1,
+    "platelet_count": 277.0,
+    "wbc": 9.64,
+    "rbc": 4.02,
+    "mcv": 63.2,
+    "hct": 25.4
+   },
+   {
+    "lab_sample_date": "2022-05-26",
+    "hgb": 9.5,
+    "anc": 2.94,
+    "arc": 0.1,
+    "platelet_count": 134.0,
+    "wbc": 5.73,
+    "rbc": 3.99,
+    "mcv": 68.4,
+    "hct": 27.3
+   },
+   {
+    "lab_sample_date": "2022-09-07",
+    "hgb": 9.1,
+    "anc": 2.07,
+    "arc": 0.1,
+    "platelet_count": 98.0,
+    "wbc": 4.38,
+    "rbc": 3.75,
+    "mcv": 68.8,
+    "hct": 25.8
+   },
+   {
+    "lab_sample_date": "2022-11-24",
+    "hgb": 9.4,
+    "anc": 4.36,
+    "arc": 0.0,
+    "platelet_count": 125.0,
+    "wbc": 7.73,
+    "rbc": 3.89,
+    "mcv": 69.7,
+    "hct": 27.1
+   },
+   {
+    "lab_sample_date": "2023-02-16",
+    "hgb": 9.6,
+    "anc": 4.21,
+    "arc": 0.0,
+    "platelet_count": 183.0,
+    "wbc": 8.16,
+    "rbc": 3.98,
+    "mcv": 69.6,
+    "hct": 27.7
+   }
+  ],
+  "expected": {
+   "observed_responder_at_last_visit": true,
+   "xgboost": {
+    "probability": 0.947,
+    "threshold": 0.5720930695533752,
+    "predicted_class": "responder",
+    "correct": true
+   },
+   "svm": {
+    "probability": 0.917,
+    "threshold": 0.3093646968130433,
+    "predicted_class": "responder",
+    "correct": true
+   },
+   "logistic_reg": {
+    "probability": 0.965,
+    "threshold": 0.6775965203998927,
+    "predicted_class": "responder",
+    "correct": true
+   }
+  }
+ },
+ {
+  "folder_number": "DEMO-006",
+  "full_name": "Abena Appiah",
+  "case_id": "75232eb2-7fab-4b51-bc1f-09e694172787",
+  "sex": "male",
+  "date_of_birth": "2016-02-23",
+  "genotype": "HbSS",
+  "baseline_hgb": 7.6,
+  "hu_start_date": "2021-11-16",
+  "visits": [
+   {
+    "lab_sample_date": "2021-11-16",
+    "hgb": 7.6,
+    "anc": 11.73,
+    "arc": 9.9,
+    "platelet_count": 454.0,
+    "wbc": 20.5,
+    "rbc": 2.28,
+    "mcv": 102.0,
+    "hct": 0.2
+   },
+   {
+    "lab_sample_date": "2021-12-14",
+    "hgb": 8.3,
+    "anc": 6.97,
+    "arc": 4.7,
+    "platelet_count": 532.0,
+    "wbc": 14.9,
+    "rbc": 2.41,
+    "mcv": 104.0,
+    "hct": 0.2
+   },
+   {
+    "lab_sample_date": "2022-03-07",
+    "hgb": 8.7,
+    "anc": 8.85,
+    "arc": 3.1,
+    "platelet_count": 489.0,
+    "wbc": 15.0,
+    "rbc": 2.39,
+    "mcv": 108.0,
+    "hct": 0.3
+   },
+   {
+    "lab_sample_date": "2022-05-31",
+    "hgb": 9.2,
+    "anc": 4.71,
+    "arc": 2.2,
+    "platelet_count": 465.0,
+    "wbc": 11.4,
+    "rbc": 2.45,
+    "mcv": 107.0,
+    "hct": 0.3
+   },
+   {
+    "lab_sample_date": "2022-08-30",
+    "hgb": 8.5,
+    "anc": 11.58,
+    "arc": 4.2,
+    "platelet_count": 415.0,
+    "wbc": 19.5,
+    "rbc": 2.4,
+    "mcv": 103.0,
+    "hct": 0.2
+   },
+   {
+    "lab_sample_date": "2022-09-13",
+    "hgb": 8.7,
+    "anc": 7.83,
+    "arc": 4.3,
+    "platelet_count": 490.0,
+    "wbc": 16.7,
+    "rbc": 2.59,
+    "mcv": 98.0,
+    "hct": 0.3
+   },
+   {
+    "lab_sample_date": "2022-11-10",
+    "hgb": 8.5,
+    "anc": 7.95,
+    "arc": 3.0,
+    "platelet_count": 540.0,
+    "wbc": 16.7,
+    "rbc": 2.59,
+    "mcv": 98.0,
+    "hct": 0.2
+   },
+   {
+    "lab_sample_date": "2023-02-02",
+    "hgb": 8.3,
+    "anc": 8.3,
+    "arc": 6.4,
+    "platelet_count": 398.0,
+    "wbc": 15.7,
+    "rbc": 2.37,
+    "mcv": 102.0,
+    "hct": 102.0
+   },
+   {
+    "lab_sample_date": "2023-03-30",
+    "hgb": 8.8,
+    "anc": 7.19,
+    "arc": 2.6,
+    "platelet_count": 329.0,
+    "wbc": 12.5,
+    "rbc": 2.36,
+    "mcv": 37.5,
+    "hct": 0.2
+   },
+   {
+    "lab_sample_date": "2023-06-01",
+    "hgb": 9.6,
+    "anc": 5.89,
+    "arc": 2.1,
+    "platelet_count": 329.0,
+    "wbc": 10.9,
+    "rbc": 2.53,
+    "mcv": 111.0,
+    "hct": 0.3
+   }
+  ],
+  "expected": {
+   "observed_responder_at_last_visit": true,
+   "xgboost": {
+    "probability": 0.835,
+    "threshold": 0.5720930695533752,
+    "predicted_class": "responder",
+    "correct": true
+   },
+   "svm": {
+    "probability": 0.511,
+    "threshold": 0.3093646968130433,
+    "predicted_class": "responder",
+    "correct": true
+   },
+   "logistic_reg": {
+    "probability": 0.75,
+    "threshold": 0.6775965203998927,
+    "predicted_class": "responder",
+    "correct": true
+   }
+  }
+ },
+ {
+  "folder_number": "DEMO-007",
+  "full_name": "Kojo Agyemang",
+  "case_id": "3f16793e-553f-47cd-a4d5-ce9a687e2642",
+  "sex": "male",
+  "date_of_birth": "2015-12-15",
+  "genotype": "HbSS",
+  "baseline_hgb": 7.1,
+  "hu_start_date": "2020-11-18",
+  "visits": [
+   {
+    "lab_sample_date": "2020-11-18",
+    "hgb": 7.1,
+    "anc": 2.95,
+    "arc": 0.2,
+    "platelet_count": 212.0,
+    "wbc": 8.6,
+    "rbc": 2.53,
+    "mcv": 82.6,
+    "hct": 20.9
+   },
+   {
+    "lab_sample_date": "2020-12-17",
+    "hgb": 7.1,
+    "anc": 3.5,
+    "arc": 4.2,
+    "platelet_count": 264.0,
+    "wbc": 8.15,
+    "rbc": 2.36,
+    "mcv": 87.3,
+    "hct": 20.6
+   },
+   {
+    "lab_sample_date": "2021-01-13",
+    "hgb": 7.6,
+    "anc": 4.43,
+    "arc": 0.0,
+    "platelet_count": 359.0,
+    "wbc": 7.68,
+    "rbc": 2.4,
+    "mcv": 91.7,
+    "hct": 22.0
+   },
+   {
+    "lab_sample_date": "2021-02-11",
+    "hgb": 8.0,
+    "anc": 1.99,
+    "arc": 0.1,
+    "platelet_count": 381.0,
+    "wbc": 5.23,
+    "rbc": 2.43,
+    "mcv": 93.4,
+    "hct": 22.7
+   },
+   {
+    "lab_sample_date": "2021-05-06",
+    "hgb": 9.1,
+    "anc": 0.5,
+    "arc": 0.1,
+    "platelet_count": 390.0,
+    "wbc": 7.83,
+    "rbc": 2.75,
+    "mcv": 93.5,
+    "hct": 25.7
+   },
+   {
+    "lab_sample_date": "2021-08-04",
+    "hgb": 9.1,
+    "anc": 2.49,
+    "arc": 0.2,
+    "platelet_count": 436.0,
+    "wbc": 8.15,
+    "rbc": 2.88,
+    "mcv": 89.6,
+    "hct": 25.8
+   },
+   {
+    "lab_sample_date": "2021-09-14",
+    "hgb": 8.4,
+    "anc": 1.12,
+    "arc": 4.1,
+    "platelet_count": 169.0,
+    "wbc": 5.1,
+    "rbc": 2.67,
+    "mcv": 90.3,
+    "hct": 24.1
+   },
+   {
+    "lab_sample_date": "2022-01-05",
+    "hgb": 8.8,
+    "anc": 1.9,
+    "arc": 0.1,
+    "platelet_count": 302.0,
+    "wbc": 6.9,
+    "rbc": 2.63,
+    "mcv": 92.0,
+    "hct": 24.2
+   },
+   {
+    "lab_sample_date": "2022-03-30",
+    "hgb": 9.0,
+    "anc": 1.84,
+    "arc": 0.1,
+    "platelet_count": 262.0,
+    "wbc": 6.44,
+    "rbc": 2.66,
+    "mcv": 92.1,
+    "hct": 24.5
+   },
+   {
+    "lab_sample_date": "2022-06-22",
+    "hgb": 8.8,
+    "anc": 1.41,
+    "arc": 0.1,
+    "platelet_count": 165.0,
+    "wbc": 5.66,
+    "rbc": 2.66,
+    "mcv": 98.1,
+    "hct": 26.1
+   },
+   {
+    "lab_sample_date": "2022-06-22",
+    "hgb": 7.8,
+    "anc": 7.14,
+    "arc": 0.2,
+    "platelet_count": 516.0,
+    "wbc": 12.8,
+    "rbc": 2.68,
+    "mcv": 82.5,
+    "hct": 22.1
+   },
+   {
+    "lab_sample_date": "2022-09-21",
+    "hgb": 8.0,
+    "anc": 3.85,
+    "arc": 0.3,
+    "platelet_count": 230.0,
+    "wbc": 9.15,
+    "rbc": 2.72,
+    "mcv": 83.5,
+    "hct": 22.7
+   },
+   {
+    "lab_sample_date": "2022-10-06",
+    "hgb": 7.8,
+    "anc": 3.18,
+    "arc": 0.2,
+    "platelet_count": 332.0,
+    "wbc": 8.56,
+    "rbc": 2.74,
+    "mcv": 78.8,
+    "hct": 21.6
+   },
+   {
+    "lab_sample_date": "2022-11-03",
+    "hgb": 7.3,
+    "anc": 3.75,
+    "arc": 4.1,
+    "platelet_count": 362.0,
+    "wbc": 5.5,
+    "rbc": 2.08,
+    "mcv": 103.0,
+    "hct": 21.6
+   },
+   {
+    "lab_sample_date": "2022-11-17",
+    "hgb": 9.4,
+    "anc": 2.27,
+    "arc": 2.7,
+    "platelet_count": 256.0,
+    "wbc": 5.8,
+    "rbc": 2.63,
+    "mcv": 107.0,
+    "hct": 0.3
+   },
+   {
+    "lab_sample_date": "2022-12-15",
+    "hgb": 9.3,
+    "anc": 5.24,
+    "arc": 2.8,
+    "platelet_count": 123.0,
+    "wbc": 9.4,
+    "rbc": 2.63,
+    "mcv": 104.0,
+    "hct": 0.3
+   },
+   {
+    "lab_sample_date": "2023-02-09",
+    "hgb": 8.9,
+    "anc": 2.01,
+    "arc": 2.9,
+    "platelet_count": 172.0,
+    "wbc": 6.2,
+    "rbc": 2.57,
+    "mcv": 103.0,
+    "hct": 0.3
+   },
+   {
+    "lab_sample_date": "2023-04-06",
+    "hgb": 9.0,
+    "anc": 1.89,
+    "arc": 2.4,
+    "platelet_count": 305.0,
+    "wbc": 4.5,
+    "rbc": 2.55,
+    "mcv": 105.0,
+    "hct": 0.3
+   }
+  ],
+  "expected": {
+   "observed_responder_at_last_visit": true,
+   "xgboost": {
+    "probability": 0.912,
+    "threshold": 0.5720930695533752,
+    "predicted_class": "responder",
+    "correct": true
+   },
+   "svm": {
+    "probability": 0.76,
+    "threshold": 0.3093646968130433,
+    "predicted_class": "responder",
+    "correct": true
+   },
+   "logistic_reg": {
+    "probability": 0.901,
+    "threshold": 0.6775965203998927,
+    "predicted_class": "responder",
+    "correct": true
+   }
+  }
+ },
+ {
+  "folder_number": "DEMO-008",
+  "full_name": "Adwoa Bonsu",
+  "case_id": "c3d60bf4-f5d9-49f1-9aa9-4ae69ba5f27c",
+  "sex": "female",
+  "date_of_birth": "2006-11-12",
+  "genotype": "HbSS",
+  "baseline_hgb": 9.4,
+  "hu_start_date": "2021-02-15",
+  "visits": [
+   {
+    "lab_sample_date": "2021-02-15",
+    "hgb": 9.4,
+    "anc": 2.07,
+    "arc": 103.6,
+    "platelet_count": 145.0,
+    "wbc": 3.57,
+    "rbc": 3.3,
+    "mcv": 86.8,
+    "hct": 28.6
+   },
+   {
+    "lab_sample_date": "2021-05-06",
+    "hgb": 9.4,
+    "anc": 2.1,
+    "arc": 4.1,
+    "platelet_count": 192.0,
+    "wbc": 4.5,
+    "rbc": 3.15,
+    "mcv": 92.0,
+    "hct": 28.9
+   },
+   {
+    "lab_sample_date": "2021-10-07",
+    "hgb": 9.2,
+    "anc": 2.13,
+    "arc": 4.0,
+    "platelet_count": 117.0,
+    "wbc": 4.53,
+    "rbc": 2.97,
+    "mcv": 94.0,
+    "hct": 27.9
+   },
+   {
+    "lab_sample_date": "2022-03-31",
+    "hgb": 9.6,
+    "anc": 2.45,
+    "arc": 2.8,
+    "platelet_count": 258.0,
+    "wbc": 4.79,
+    "rbc": 3.28,
+    "mcv": 87.0,
+    "hct": 28.6
+   },
+   {
+    "lab_sample_date": "2022-07-14",
+    "hgb": 11.5,
+    "anc": 4.05,
+    "arc": 8.7,
+    "platelet_count": 226.0,
+    "wbc": 8.33,
+    "rbc": 2.72,
+    "mcv": 126.1,
+    "hct": 34.3
+   }
+  ],
+  "expected": {
+   "observed_responder_at_last_visit": true,
+   "xgboost": {
+    "probability": 0.219,
+    "threshold": 0.5720930695533752,
+    "predicted_class": "non_responder",
+    "correct": false
+   },
+   "svm": {
+    "probability": 0.125,
+    "threshold": 0.3093646968130433,
+    "predicted_class": "non_responder",
+    "correct": false
+   },
+   "logistic_reg": {
+    "probability": 0.238,
+    "threshold": 0.6775965203998927,
+    "predicted_class": "non_responder",
+    "correct": false
+   }
+  }
+ },
+ {
+  "folder_number": "DEMO-009",
+  "full_name": "Kwabena Ofori",
+  "case_id": "b9abd8cb-5f0d-4ebc-b568-e06f7aee4f60",
+  "sex": "male",
+  "date_of_birth": "2013-05-04",
+  "genotype": "HbSS",
+  "baseline_hgb": 8.4,
+  "hu_start_date": "2022-10-06",
+  "visits": [
+   {
+    "lab_sample_date": "2022-10-06",
+    "hgb": 8.4,
+    "anc": 6.08,
+    "arc": 0.3,
+    "platelet_count": 319.0,
+    "wbc": 15.14,
+    "rbc": 2.57,
+    "mcv": 91.4,
+    "hct": 23.5
+   },
+   {
+    "lab_sample_date": "2022-11-03",
+    "hgb": 7.5,
+    "anc": 5.39,
+    "arc": 0.2,
+    "platelet_count": 303.0,
+    "wbc": 9.97,
+    "rbc": 2.17,
+    "mcv": 98.2,
+    "hct": 21.3
+   },
+   {
+    "lab_sample_date": "2022-11-17",
+    "hgb": 7.9,
+    "anc": 6.61,
+    "arc": 0.0,
+    "platelet_count": 427.0,
+    "wbc": 12.73,
+    "rbc": 2.34,
+    "mcv": 94.9,
+    "hct": 22.2
+   },
+   {
+    "lab_sample_date": "2022-12-19",
+    "hgb": 8.0,
+    "anc": 3.89,
+    "arc": 269.0,
+    "platelet_count": 269.0,
+    "wbc": 12.03,
+    "rbc": 2.23,
+    "mcv": 99.1,
+    "hct": 22.1
+   },
+   {
+    "lab_sample_date": "2023-02-13",
+    "hgb": 8.5,
+    "anc": 2.75,
+    "arc": 0.2,
+    "platelet_count": 118.0,
+    "wbc": 10.45,
+    "rbc": 2.24,
+    "mcv": 105.4,
+    "hct": 23.6
+   },
+   {
+    "lab_sample_date": "2023-05-15",
+    "hgb": 9.6,
+    "anc": 2.49,
+    "arc": 4.1,
+    "platelet_count": 468.0,
+    "wbc": 9.72,
+    "rbc": 2.48,
+    "mcv": 104.4,
+    "hct": 25.9
+   }
+  ],
+  "expected": {
+   "observed_responder_at_last_visit": true,
+   "xgboost": {
+    "probability": 0.383,
+    "threshold": 0.5720930695533752,
+    "predicted_class": "non_responder",
+    "correct": false
+   },
+   "svm": {
+    "probability": 0.271,
+    "threshold": 0.3093646968130433,
+    "predicted_class": "non_responder",
+    "correct": false
+   },
+   "logistic_reg": {
+    "probability": 0.499,
+    "threshold": 0.6775965203998927,
+    "predicted_class": "non_responder",
+    "correct": false
+   }
+  }
+ },
+ {
+  "folder_number": "DEMO-010",
+  "full_name": "Efua Addo",
+  "case_id": "605661da-ac90-416d-9a3f-37c2998af42c",
+  "sex": "male",
+  "date_of_birth": "2010-10-13",
+  "genotype": "HbSC",
+  "baseline_hgb": 10.1,
+  "hu_start_date": "2021-12-07",
+  "visits": [
+   {
+    "lab_sample_date": "2021-12-07",
+    "hgb": 10.1,
+    "anc": 2.57,
+    "arc": 1.4,
+    "platelet_count": 257.0,
+    "wbc": 5.6,
+    "rbc": 4.2,
+    "mcv": 67.1,
+    "hct": 27.9
+   },
+   {
+    "lab_sample_date": "2022-01-07",
+    "hgb": 8.4,
+    "anc": 2.49,
+    "arc": 4.1,
+    "platelet_count": 287.0,
+    "wbc": 6.55,
+    "rbc": 2.98,
+    "mcv": 82.2,
+    "hct": 24.5
+   },
+   {
+    "lab_sample_date": "2022-03-08",
+    "hgb": 9.9,
+    "anc": 3.48,
+    "arc": 2.7,
+    "platelet_count": 138.0,
+    "wbc": 5.6,
+    "rbc": 3.9,
+    "mcv": 68.3,
+    "hct": 26.9
+   },
+   {
+    "lab_sample_date": "2022-05-30",
+    "hgb": 10.1,
+    "anc": 4.61,
+    "arc": 0.1,
+    "platelet_count": 151.0,
+    "wbc": 7.88,
+    "rbc": 4.15,
+    "mcv": 67.2,
+    "hct": 27.9
+   },
+   {
+    "lab_sample_date": "2022-08-26",
+    "hgb": 12.0,
+    "anc": 1.84,
+    "arc": 0.1,
+    "platelet_count": 109.0,
+    "wbc": 4.34,
+    "rbc": 4.8,
+    "mcv": 68.5,
+    "hct": 32.9
+   }
+  ],
+  "expected": {
+   "observed_responder_at_last_visit": true,
+   "xgboost": {
+    "probability": 0.204,
+    "threshold": 0.5720930695533752,
+    "predicted_class": "non_responder",
+    "correct": false
+   },
+   "svm": {
+    "probability": 0.179,
+    "threshold": 0.3093646968130433,
+    "predicted_class": "non_responder",
+    "correct": false
+   },
+   "logistic_reg": {
+    "probability": 0.294,
+    "threshold": 0.6775965203998927,
+    "predicted_class": "non_responder",
+    "correct": false
+   }
+  }
+ },
+ {
+  "folder_number": "DEMO-011",
+  "full_name": "Nana Yeboah",
+  "case_id": "f20c60dd-ee87-4304-86c4-8f407f2e701a",
+  "sex": "female",
+  "date_of_birth": "2002-06-26",
+  "genotype": "HbSS",
+  "baseline_hgb": 8.9,
+  "hu_start_date": "2020-12-31",
+  "visits": [
+   {
+    "lab_sample_date": "2020-12-31",
+    "hgb": 8.9,
+    "anc": 2.9,
+    "arc": 4.1,
+    "platelet_count": 350.0,
+    "wbc": 6.3,
+    "rbc": 2.63,
+    "mcv": 103.0,
+    "hct": 27.0
+   },
+   {
+    "lab_sample_date": "2021-03-25",
+    "hgb": 9.0,
+    "anc": 1.17,
+    "arc": 104.2,
+    "platelet_count": 319.0,
+    "wbc": 4.72,
+    "rbc": 2.78,
+    "mcv": 98.1,
+    "hct": 27.3
+   },
+   {
+    "lab_sample_date": "2021-05-27",
+    "hgb": 9.1,
+    "anc": 1.61,
+    "arc": 123.2,
+    "platelet_count": 136.0,
+    "wbc": 5.15,
+    "rbc": 2.6,
+    "mcv": 97.9,
+    "hct": 25.4
+   },
+   {
+    "lab_sample_date": "2021-08-19",
+    "hgb": 5.7,
+    "anc": 2.63,
+    "arc": 134.3,
+    "platelet_count": 334.0,
+    "wbc": 5.62,
+    "rbc": 2.66,
+    "mcv": 100.2,
+    "hct": 26.7
+   },
+   {
+    "lab_sample_date": "2021-09-16",
+    "hgb": 9.4,
+    "anc": 2.5,
+    "arc": 5.2,
+    "platelet_count": 270.0,
+    "wbc": 5.98,
+    "rbc": 2.8,
+    "mcv": 99.8,
+    "hct": 28.0
+   },
+   {
+    "lab_sample_date": "2022-01-06",
+    "hgb": 8.7,
+    "anc": 2.64,
+    "arc": 3.7,
+    "platelet_count": 346.0,
+    "wbc": 6.54,
+    "rbc": 2.51,
+    "mcv": 99.7,
+    "hct": 25.1
+   },
+   {
+    "lab_sample_date": "2022-05-05",
+    "hgb": 8.7,
+    "anc": 0.98,
+    "arc": 3.7,
+    "platelet_count": 353.0,
+    "wbc": 4.41,
+    "rbc": 2.0,
+    "mcv": 97.9,
+    "hct": 28.4
+   },
+   {
+    "lab_sample_date": "2022-06-02",
+    "hgb": 8.5,
+    "anc": 1.4,
+    "arc": 3.0,
+    "platelet_count": 392.0,
+    "wbc": 4.31,
+    "rbc": 2.52,
+    "mcv": 100.6,
+    "hct": 25.4
+   },
+   {
+    "lab_sample_date": "2022-07-28",
+    "hgb": 9.0,
+    "anc": 3.27,
+    "arc": 4.1,
+    "platelet_count": 386.0,
+    "wbc": 7.07,
+    "rbc": 2.71,
+    "mcv": 96.6,
+    "hct": 26.2
+   }
+  ],
+  "expected": {
+   "observed_responder_at_last_visit": false,
+   "xgboost": {
+    "probability": 0.188,
+    "threshold": 0.5720930695533752,
+    "predicted_class": "non_responder",
+    "correct": true
+   },
+   "svm": {
+    "probability": 0.065,
+    "threshold": 0.3093646968130433,
+    "predicted_class": "non_responder",
+    "correct": true
+   },
+   "logistic_reg": {
+    "probability": 0.138,
+    "threshold": 0.6775965203998927,
+    "predicted_class": "non_responder",
+    "correct": true
+   }
+  }
+ },
+ {
+  "folder_number": "DEMO-012",
+  "full_name": "Esi Quaye",
+  "case_id": "441f9e3e-293c-49a7-87b6-44085aec2105",
+  "sex": "female",
+  "date_of_birth": "2012-10-07",
+  "genotype": "HbSS",
+  "baseline_hgb": 9.8,
+  "hu_start_date": "2022-06-13",
+  "visits": [
+   {
+    "lab_sample_date": "2022-06-13",
+    "hgb": 9.8,
+    "anc": 5.64,
+    "arc": 0.8,
+    "platelet_count": 239.0,
+    "wbc": 7.76,
+    "rbc": 5.46,
+    "mcv": 66.9,
+    "hct": 36.5
+   },
+   {
+    "lab_sample_date": "2022-09-13",
+    "hgb": 8.4,
+    "anc": 3.52,
+    "arc": 0.2,
+    "platelet_count": 188.0,
+    "wbc": 6.63,
+    "rbc": 3.89,
+    "mcv": 64.5,
+    "hct": 25.1
+   },
+   {
+    "lab_sample_date": "2022-11-24",
+    "hgb": 9.6,
+    "anc": 2.38,
+    "arc": 0.1,
+    "platelet_count": 355.0,
+    "wbc": 5.1,
+    "rbc": 4.54,
+    "mcv": 66.3,
+    "hct": 30.1
+   },
+   {
+    "lab_sample_date": "2023-02-27",
+    "hgb": 8.4,
+    "anc": 2.18,
+    "arc": 0.0,
+    "platelet_count": 452.0,
+    "wbc": 5.18,
+    "rbc": 3.77,
+    "mcv": 66.3,
+    "hct": 25.0
+   },
+   {
+    "lab_sample_date": "2023-05-22",
+    "hgb": 9.1,
+    "anc": 3.7,
+    "arc": 0.1,
+    "platelet_count": 424.0,
+    "wbc": 6.13,
+    "rbc": 4.06,
+    "mcv": 66.0,
+    "hct": 26.8
+   }
+  ],
+  "expected": {
+   "observed_responder_at_last_visit": false,
+   "xgboost": {
+    "probability": 0.089,
+    "threshold": 0.5720930695533752,
+    "predicted_class": "non_responder",
+    "correct": true
+   },
+   "svm": {
+    "probability": 0.013,
+    "threshold": 0.3093646968130433,
+    "predicted_class": "non_responder",
+    "correct": true
+   },
+   "logistic_reg": {
+    "probability": 0.026,
+    "threshold": 0.6775965203998927,
+    "predicted_class": "non_responder",
+    "correct": true
+   }
+  }
+ },
+ {
+  "folder_number": "DEMO-013",
+  "full_name": "Fiifi Antwi",
+  "case_id": "511bee2b-abd9-4e83-89a0-6f7d5197af12",
+  "sex": "female",
+  "date_of_birth": "1983-10-09",
+  "genotype": "HbSS",
+  "baseline_hgb": 10.2,
+  "hu_start_date": "2020-09-14",
+  "visits": [
+   {
+    "lab_sample_date": "2020-09-14",
+    "hgb": 10.2,
+    "anc": 2.26,
+    "arc": 4.1,
+    "platelet_count": 268.0,
+    "wbc": 6.52,
+    "rbc": 3.04,
+    "mcv": 92.1,
+    "hct": 28.0
+   },
+   {
+    "lab_sample_date": "2021-01-28",
+    "hgb": 10.5,
+    "anc": 3.18,
+    "arc": 1.9,
+    "platelet_count": 286.0,
+    "wbc": 6.36,
+    "rbc": 3.01,
+    "mcv": 94.7,
+    "hct": 28.5
+   },
+   {
+    "lab_sample_date": "2021-09-09",
+    "hgb": 9.9,
+    "anc": 2.21,
+    "arc": 1.4,
+    "platelet_count": 254.0,
+    "wbc": 4.22,
+    "rbc": 2.86,
+    "mcv": 93.0,
+    "hct": 26.7
+   },
+   {
+    "lab_sample_date": "2022-07-07",
+    "hgb": 10.0,
+    "anc": 2.67,
+    "arc": 2.0,
+    "platelet_count": 317.0,
+    "wbc": 6.45,
+    "rbc": 3.02,
+    "mcv": 94.0,
+    "hct": 28.4
+   },
+   {
+    "lab_sample_date": "2022-10-13",
+    "hgb": 10.4,
+    "anc": 3.11,
+    "arc": 1.6,
+    "platelet_count": 317.0,
+    "wbc": 6.5,
+    "rbc": 3.11,
+    "mcv": 92.3,
+    "hct": 28.7
+   },
+   {
+    "lab_sample_date": "2023-01-30",
+    "hgb": 9.5,
+    "anc": 3.49,
+    "arc": 2.1,
+    "platelet_count": 255.0,
+    "wbc": 6.78,
+    "rbc": 2.83,
+    "mcv": 91.5,
+    "hct": 25.9
+   }
+  ],
+  "expected": {
+   "observed_responder_at_last_visit": false,
+   "xgboost": {
+    "probability": 0.184,
+    "threshold": 0.5720930695533752,
+    "predicted_class": "non_responder",
+    "correct": true
+   },
+   "svm": {
+    "probability": 0.061,
+    "threshold": 0.3093646968130433,
+    "predicted_class": "non_responder",
+    "correct": true
+   },
+   "logistic_reg": {
+    "probability": 0.104,
+    "threshold": 0.6775965203998927,
+    "predicted_class": "non_responder",
+    "correct": true
+   }
+  }
+ },
+ {
+  "folder_number": "DEMO-014",
+  "full_name": "Araba Tetteh",
+  "case_id": "9dda447e-e854-4803-bf86-c5d5c7f183a5",
+  "sex": "female",
+  "date_of_birth": "2017-11-28",
+  "genotype": "HbSS",
+  "baseline_hgb": 15.3,
+  "hu_start_date": "2020-11-03",
+  "visits": [
+   {
+    "lab_sample_date": "2020-11-03",
+    "hgb": 15.3,
+    "anc": 3.76,
+    "arc": 4.1,
+    "platelet_count": 218.0,
+    "wbc": 19.78,
+    "rbc": 2.63,
+    "mcv": 84.0,
+    "hct": 22.1
+   },
+   {
+    "lab_sample_date": "2021-04-22",
+    "hgb": 8.1,
+    "anc": 4.01,
+    "arc": 4.1,
+    "platelet_count": 326.0,
+    "wbc": 15.21,
+    "rbc": 2.61,
+    "mcv": 86.2,
+    "hct": 22.5
+   },
+   {
+    "lab_sample_date": "2021-07-15",
+    "hgb": 8.1,
+    "anc": 5.37,
+    "arc": 0.2,
+    "platelet_count": 259.0,
+    "wbc": 19.27,
+    "rbc": 2.66,
+    "mcv": 88.3,
+    "hct": 23.5
+   },
+   {
+    "lab_sample_date": "2021-08-25",
+    "hgb": 8.6,
+    "anc": 4.62,
+    "arc": 0.2,
+    "platelet_count": 437.0,
+    "wbc": 13.3,
+    "rbc": 2.71,
+    "mcv": 89.7,
+    "hct": 24.3
+   },
+   {
+    "lab_sample_date": "2021-11-22",
+    "hgb": 8.6,
+    "anc": 4.59,
+    "arc": 8.2,
+    "platelet_count": 357.0,
+    "wbc": 12.8,
+    "rbc": 2.7,
+    "mcv": 89.4,
+    "hct": 24.5
+   },
+   {
+    "lab_sample_date": "2022-02-14",
+    "hgb": 8.2,
+    "anc": 3.62,
+    "arc": 6.7,
+    "platelet_count": 144.0,
+    "wbc": 10.5,
+    "rbc": 2.6,
+    "mcv": 91.0,
+    "hct": 23.2
+   },
+   {
+    "lab_sample_date": "2022-05-16",
+    "hgb": 7.8,
+    "anc": 4.19,
+    "arc": 0.2,
+    "platelet_count": 343.0,
+    "wbc": 13.32,
+    "rbc": 2.55,
+    "mcv": 89.8,
+    "hct": 22.9
+   },
+   {
+    "lab_sample_date": "2022-09-21",
+    "hgb": 9.2,
+    "anc": 3.36,
+    "arc": 0.2,
+    "platelet_count": 354.0,
+    "wbc": 12.36,
+    "rbc": 2.81,
+    "mcv": 94.0,
+    "hct": 26.4
+   },
+   {
+    "lab_sample_date": "2022-11-17",
+    "hgb": 8.9,
+    "anc": 4.59,
+    "arc": 0.2,
+    "platelet_count": 418.0,
+    "wbc": 13.17,
+    "rbc": 2.73,
+    "mcv": 94.5,
+    "hct": 25.8
+   },
+   {
+    "lab_sample_date": "2023-02-02",
+    "hgb": 9.1,
+    "anc": 6.46,
+    "arc": 0.2,
+    "platelet_count": 470.0,
+    "wbc": 11.46,
+    "rbc": 2.84,
+    "mcv": 91.5,
+    "hct": 26.0
+   },
+   {
+    "lab_sample_date": "2023-04-27",
+    "hgb": 9.4,
+    "anc": 2.4,
+    "arc": 0.2,
+    "platelet_count": 489.0,
+    "wbc": 11.07,
+    "rbc": 2.96,
+    "mcv": 92.6,
+    "hct": 27.4
+   }
+  ],
+  "expected": {
+   "observed_responder_at_last_visit": false,
+   "xgboost": {
+    "probability": 0.047,
+    "threshold": 0.5720930695533752,
+    "predicted_class": "non_responder",
+    "correct": true
+   },
+   "svm": {
+    "probability": 0.0,
+    "threshold": 0.3093646968130433,
+    "predicted_class": "non_responder",
+    "correct": true
+   },
+   "logistic_reg": {
+    "probability": 0.0,
+    "threshold": 0.6775965203998927,
+    "predicted_class": "non_responder",
+    "correct": true
+   }
+  }
+ },
+ {
+  "folder_number": "DEMO-015",
+  "full_name": "Kwesi Amoah",
+  "case_id": "cc6119f8-de1e-483e-8e25-523e073ab74a",
+  "sex": "female",
+  "date_of_birth": "2013-04-07",
+  "genotype": "HbSS",
+  "baseline_hgb": 8.9,
+  "hu_start_date": "2020-11-03",
+  "visits": [
+   {
+    "lab_sample_date": "2020-11-03",
+    "hgb": 8.9,
+    "anc": 2.73,
+    "arc": 0.1,
+    "platelet_count": 556.0,
+    "wbc": 6.7,
+    "rbc": 3.02,
+    "mcv": 83.8,
+    "hct": 25.3
+   },
+   {
+    "lab_sample_date": "2021-03-11",
+    "hgb": 8.7,
+    "anc": 2.51,
+    "arc": 0.2,
+    "platelet_count": 504.0,
+    "wbc": 5.55,
+    "rbc": 2.9,
+    "mcv": 87.0,
+    "hct": 25.4
+   },
+   {
+    "lab_sample_date": "2021-06-02",
+    "hgb": 9.4,
+    "anc": 2.41,
+    "arc": 0.1,
+    "platelet_count": 493.0,
+    "wbc": 8.06,
+    "rbc": 2.95,
+    "mcv": 87.5,
+    "hct": 25.8
+   },
+   {
+    "lab_sample_date": "2021-08-25",
+    "hgb": 8.8,
+    "anc": 2.82,
+    "arc": 0.1,
+    "platelet_count": 528.0,
+    "wbc": 8.02,
+    "rbc": 2.73,
+    "mcv": 90.8,
+    "hct": 24.8
+   },
+   {
+    "lab_sample_date": "2021-11-17",
+    "hgb": 9.5,
+    "anc": 1.08,
+    "arc": 0.1,
+    "platelet_count": 376.0,
+    "wbc": 5.21,
+    "rbc": 2.7,
+    "mcv": 100.7,
+    "hct": 27.2
+   },
+   {
+    "lab_sample_date": "2022-03-07",
+    "hgb": 10.6,
+    "anc": 1.01,
+    "arc": 0.1,
+    "platelet_count": 329.0,
+    "wbc": 3.06,
+    "rbc": 2.93,
+    "mcv": 99.0,
+    "hct": 29.0
+   },
+   {
+    "lab_sample_date": "2022-06-02",
+    "hgb": 10.2,
+    "anc": 1.87,
+    "arc": 0.1,
+    "platelet_count": 285.0,
+    "wbc": 4.0,
+    "rbc": 3.02,
+    "mcv": 94.7,
+    "hct": 24.0
+   },
+   {
+    "lab_sample_date": "2022-08-30",
+    "hgb": 9.5,
+    "anc": 0.92,
+    "arc": 0.1,
+    "platelet_count": 281.0,
+    "wbc": 3.78,
+    "rbc": 2.74,
+    "mcv": 96.0,
+    "hct": 26.3
+   },
+   {
+    "lab_sample_date": "2022-10-27",
+    "hgb": 9.3,
+    "anc": 1.39,
+    "arc": 0.0,
+    "platelet_count": 251.0,
+    "wbc": 4.16,
+    "rbc": 2.67,
+    "mcv": 98.1,
+    "hct": 26.2
+   },
+   {
+    "lab_sample_date": "2023-01-24",
+    "hgb": 9.6,
+    "anc": 2.5,
+    "arc": 11.0,
+    "platelet_count": 297.0,
+    "wbc": 4.7,
+    "rbc": 3.14,
+    "mcv": 107.9,
+    "hct": 33.9
+   },
+   {
+    "lab_sample_date": "2023-05-18",
+    "hgb": 9.8,
+    "anc": 0.84,
+    "arc": 0.1,
+    "platelet_count": 234.0,
+    "wbc": 3.49,
+    "rbc": 2.8,
+    "mcv": 99.3,
+    "hct": 27.8
+   }
+  ],
+  "expected": {
+   "observed_responder_at_last_visit": false,
+   "xgboost": {
+    "probability": 0.344,
+    "threshold": 0.5720930695533752,
+    "predicted_class": "non_responder",
+    "correct": true
+   },
+   "svm": {
+    "probability": 0.222,
+    "threshold": 0.3093646968130433,
+    "predicted_class": "non_responder",
+    "correct": true
+   },
+   "logistic_reg": {
+    "probability": 0.393,
+    "threshold": 0.6775965203998927,
+    "predicted_class": "non_responder",
+    "correct": true
+   }
+  }
+ },
+ {
+  "folder_number": "DEMO-016",
+  "full_name": "Afia Osei",
+  "case_id": "c116d38c-8979-4a74-990f-24091ceee990",
+  "sex": "female",
+  "date_of_birth": "2019-07-23",
+  "genotype": "HbSS",
+  "baseline_hgb": 8.0,
+  "hu_start_date": "2022-02-10",
+  "visits": [
+   {
+    "lab_sample_date": "2022-02-10",
+    "hgb": 8.0,
+    "anc": 7.96,
+    "arc": 4.1,
+    "platelet_count": 158.0,
+    "wbc": 15.86,
+    "rbc": 3.96,
+    "mcv": 62.1,
+    "hct": 24.6
+   },
+   {
+    "lab_sample_date": "2022-05-25",
+    "hgb": 7.2,
+    "anc": 2.17,
+    "arc": 0.1,
+    "platelet_count": 174.0,
+    "wbc": 4.21,
+    "rbc": 3.69,
+    "mcv": 58.0,
+    "hct": 21.4
+   },
+   {
+    "lab_sample_date": "2022-08-13",
+    "hgb": 9.3,
+    "anc": 5.36,
+    "arc": 6.3,
+    "platelet_count": 266.0,
+    "wbc": 10.3,
+    "rbc": 4.37,
+    "mcv": 67.0,
+    "hct": 0.3
+   },
+   {
+    "lab_sample_date": "2022-11-07",
+    "hgb": 8.1,
+    "anc": 6.83,
+    "arc": 8.2,
+    "platelet_count": 301.0,
+    "wbc": 11.9,
+    "rbc": 3.88,
+    "mcv": 0.3,
+    "hct": 66.0
+   },
+   {
+    "lab_sample_date": "2022-11-21",
+    "hgb": 8.0,
+    "anc": 4.66,
+    "arc": 7.4,
+    "platelet_count": 284.0,
+    "wbc": 7.4,
+    "rbc": 3.76,
+    "mcv": 67.0,
+    "hct": 0.2
+   },
+   {
+    "lab_sample_date": "2022-12-12",
+    "hgb": 7.9,
+    "anc": 5.3,
+    "arc": 4.1,
+    "platelet_count": 151.0,
+    "wbc": 10.5,
+    "rbc": 3.69,
+    "mcv": 65.0,
+    "hct": 0.2
+   },
+   {
+    "lab_sample_date": "2023-01-30",
+    "hgb": 7.5,
+    "anc": 3.54,
+    "arc": 3.5,
+    "platelet_count": 227.0,
+    "wbc": 11.6,
+    "rbc": 3.54,
+    "mcv": 65.0,
+    "hct": 0.2
+   },
+   {
+    "lab_sample_date": "2023-02-27",
+    "hgb": 7.7,
+    "anc": 4.32,
+    "arc": 8.4,
+    "platelet_count": 269.0,
+    "wbc": 10.8,
+    "rbc": 3.68,
+    "mcv": 66.0,
+    "hct": 0.2
+   },
+   {
+    "lab_sample_date": "2023-05-08",
+    "hgb": 8.0,
+    "anc": 2.69,
+    "arc": 6.2,
+    "platelet_count": 238.0,
+    "wbc": 9.1,
+    "rbc": 3.53,
+    "mcv": 68.0,
+    "hct": 0.2
+   }
+  ],
+  "expected": {
+   "observed_responder_at_last_visit": false,
+   "xgboost": {
+    "probability": 0.207,
+    "threshold": 0.5720930695533752,
+    "predicted_class": "non_responder",
+    "correct": true
+   },
+   "svm": {
+    "probability": 0.118,
+    "threshold": 0.3093646968130433,
+    "predicted_class": "non_responder",
+    "correct": true
+   },
+   "logistic_reg": {
+    "probability": 0.245,
+    "threshold": 0.6775965203998927,
+    "predicted_class": "non_responder",
+    "correct": true
+   }
+  }
+ },
+ {
+  "folder_number": "DEMO-017",
+  "full_name": "Ebo Larbi",
+  "case_id": "0fb12245-6b66-4580-9565-5a268ea6eab6",
+  "sex": "female",
+  "date_of_birth": "2017-09-30",
+  "genotype": "HbSS",
+  "baseline_hgb": 10.7,
+  "hu_start_date": "2020-10-29",
+  "visits": [
+   {
+    "lab_sample_date": "2020-10-29",
+    "hgb": 10.7,
+    "anc": 4.49,
+    "arc": 0.1,
+    "platelet_count": 324.0,
+    "wbc": 15.6,
+    "rbc": 3.36,
+    "mcv": 89.9,
+    "hct": 30.2
+   },
+   {
+    "lab_sample_date": "2020-12-03",
+    "hgb": 10.9,
+    "anc": 4.3,
+    "arc": 4.1,
+    "platelet_count": 221.0,
+    "wbc": 12.7,
+    "rbc": 3.15,
+    "mcv": 95.4,
+    "hct": 30.0
+   },
+   {
+    "lab_sample_date": "2021-01-20",
+    "hgb": 10.1,
+    "anc": 2.2,
+    "arc": 4.1,
+    "platelet_count": 303.0,
+    "wbc": 11.86,
+    "rbc": 2.92,
+    "mcv": 88.7,
+    "hct": 25.9
+   },
+   {
+    "lab_sample_date": "2021-04-22",
+    "hgb": 13.2,
+    "anc": 3.22,
+    "arc": 4.1,
+    "platelet_count": 286.0,
+    "wbc": 11.92,
+    "rbc": 3.91,
+    "mcv": 94.5,
+    "hct": 37.0
+   },
+   {
+    "lab_sample_date": "2021-07-15",
+    "hgb": 11.7,
+    "anc": 4.74,
+    "arc": 2.2,
+    "platelet_count": 480.0,
+    "wbc": 15.63,
+    "rbc": 3.7,
+    "mcv": 88.7,
+    "hct": 32.8
+   },
+   {
+    "lab_sample_date": "2021-12-14",
+    "hgb": 10.3,
+    "anc": 1.21,
+    "arc": 3.6,
+    "platelet_count": 409.0,
+    "wbc": 11.6,
+    "rbc": 3.3,
+    "mcv": 87.2,
+    "hct": 28.6
+   },
+   {
+    "lab_sample_date": "2022-02-16",
+    "hgb": 10.5,
+    "anc": 5.5,
+    "arc": 1.8,
+    "platelet_count": 514.0,
+    "wbc": 18.2,
+    "rbc": 3.25,
+    "mcv": 101.0,
+    "hct": 32.8
+   },
+   {
+    "lab_sample_date": "2022-05-17",
+    "hgb": 8.7,
+    "anc": 5.9,
+    "arc": 0.1,
+    "platelet_count": 347.0,
+    "wbc": 9.4,
+    "rbc": 2.82,
+    "mcv": 88.7,
+    "hct": 24.0
+   },
+   {
+    "lab_sample_date": "2022-06-14",
+    "hgb": 11.6,
+    "anc": 3.8,
+    "arc": 0.4,
+    "platelet_count": 326.0,
+    "wbc": 15.1,
+    "rbc": 3.5,
+    "mcv": 85.0,
+    "hct": 30.2
+   },
+   {
+    "lab_sample_date": "2022-08-09",
+    "hgb": 11.2,
+    "anc": 5.02,
+    "arc": 4.1,
+    "platelet_count": 501.0,
+    "wbc": 10.79,
+    "rbc": 3.52,
+    "mcv": 87.2,
+    "hct": 30.7
+   },
+   {
+    "lab_sample_date": "2022-10-25",
+    "hgb": 11.9,
+    "anc": 7.1,
+    "arc": 0.3,
+    "platelet_count": 510.0,
+    "wbc": 16.1,
+    "rbc": 3.38,
+    "mcv": 88.2,
+    "hct": 29.8
+   },
+   {
+    "lab_sample_date": "2023-01-26",
+    "hgb": 11.3,
+    "anc": 6.3,
+    "arc": 0.1,
+    "platelet_count": 716.0,
+    "wbc": 13.6,
+    "rbc": 3.55,
+    "mcv": 83.7,
+    "hct": 29.7
+   },
+   {
+    "lab_sample_date": "2023-04-20",
+    "hgb": 10.6,
+    "anc": 5.9,
+    "arc": 0.8,
+    "platelet_count": 364.0,
+    "wbc": 12.0,
+    "rbc": 3.29,
+    "mcv": 86.9,
+    "hct": 28.5
+   }
+  ],
+  "expected": {
+   "observed_responder_at_last_visit": false,
+   "xgboost": {
+    "probability": 0.188,
+    "threshold": 0.5720930695533752,
+    "predicted_class": "non_responder",
+    "correct": true
+   },
+   "svm": {
+    "probability": 0.063,
+    "threshold": 0.3093646968130433,
+    "predicted_class": "non_responder",
+    "correct": true
+   },
+   "logistic_reg": {
+    "probability": 0.129,
+    "threshold": 0.6775965203998927,
+    "predicted_class": "non_responder",
+    "correct": true
+   }
+  }
+ },
+ {
+  "folder_number": "DEMO-018",
+  "full_name": "Maame Frimpong",
+  "case_id": "b9f30768-419b-44bb-bfcb-255995b4f1a8",
+  "sex": "male",
+  "date_of_birth": "2018-08-15",
+  "genotype": "HbSS",
+  "baseline_hgb": 9.5,
+  "hu_start_date": "2021-12-27",
+  "visits": [
+   {
+    "lab_sample_date": "2021-12-27",
+    "hgb": 9.5,
+    "anc": 2.51,
+    "arc": 0.1,
+    "platelet_count": 311.0,
+    "wbc": 7.98,
+    "rbc": 4.02,
+    "mcv": 69.2,
+    "hct": 27.8
+   },
+   {
+    "lab_sample_date": "2022-02-22",
+    "hgb": 10.3,
+    "anc": 3.01,
+    "arc": 1.7,
+    "platelet_count": 231.0,
+    "wbc": 7.2,
+    "rbc": 4.0,
+    "mcv": 75.4,
+    "hct": 30.0
+   },
+   {
+    "lab_sample_date": "2022-05-16",
+    "hgb": 10.3,
+    "anc": 4.68,
+    "arc": 3.2,
+    "platelet_count": 440.0,
+    "wbc": 9.8,
+    "rbc": 4.18,
+    "mcv": 75.0,
+    "hct": 0.3
+   },
+   {
+    "lab_sample_date": "2022-08-09",
+    "hgb": 9.4,
+    "anc": 4.84,
+    "arc": 0.1,
+    "platelet_count": 328.0,
+    "wbc": 9.61,
+    "rbc": 4.08,
+    "mcv": 65.2,
+    "hct": 26.6
+   },
+   {
+    "lab_sample_date": "2022-08-09",
+    "hgb": 10.7,
+    "anc": 7.17,
+    "arc": 0.1,
+    "platelet_count": 291.0,
+    "wbc": 11.2,
+    "rbc": 4.47,
+    "mcv": 68.9,
+    "hct": 30.8
+   },
+   {
+    "lab_sample_date": "2022-11-03",
+    "hgb": 8.9,
+    "anc": 5.39,
+    "arc": 0.1,
+    "platelet_count": 343.0,
+    "wbc": 10.59,
+    "rbc": 3.84,
+    "mcv": 66.9,
+    "hct": 25.7
+   },
+   {
+    "lab_sample_date": "2022-12-01",
+    "hgb": 9.1,
+    "anc": 3.36,
+    "arc": 4.1,
+    "platelet_count": 383.0,
+    "wbc": 7.2,
+    "rbc": 3.85,
+    "mcv": 72.0,
+    "hct": 0.3
+   },
+   {
+    "lab_sample_date": "2023-01-26",
+    "hgb": 9.9,
+    "anc": 2.45,
+    "arc": 2.3,
+    "platelet_count": 294.0,
+    "wbc": 5.7,
+    "rbc": 3.88,
+    "mcv": 78.0,
+    "hct": 0.3
+   },
+   {
+    "lab_sample_date": "2023-05-18",
+    "hgb": 10.3,
+    "anc": 3.62,
+    "arc": 2.1,
+    "platelet_count": 365.0,
+    "wbc": 8.0,
+    "rbc": 3.96,
+    "mcv": 78.0,
+    "hct": 0.3
+   }
+  ],
+  "expected": {
+   "observed_responder_at_last_visit": false,
+   "xgboost": {
+    "probability": 0.31,
+    "threshold": 0.5720930695533752,
+    "predicted_class": "non_responder",
+    "correct": true
+   },
+   "svm": {
+    "probability": 0.159,
+    "threshold": 0.3093646968130433,
+    "predicted_class": "non_responder",
+    "correct": true
+   },
+   "logistic_reg": {
+    "probability": 0.311,
+    "threshold": 0.6775965203998927,
+    "predicted_class": "non_responder",
+    "correct": true
+   }
+  }
+ },
+ {
+  "folder_number": "DEMO-019",
+  "full_name": "Paa Kwesi Baah",
+  "case_id": "cd074759-0e7d-4ef6-9cea-6ff849ba48a3",
+  "sex": "female",
+  "date_of_birth": "2000-07-25",
+  "genotype": "HbSS",
+  "baseline_hgb": 7.5,
+  "hu_start_date": "2021-01-11",
+  "visits": [
+   {
+    "lab_sample_date": "2021-01-11",
+    "hgb": 7.5,
+    "anc": 3.96,
+    "arc": 273.1,
+    "platelet_count": 599.0,
+    "wbc": 8.22,
+    "rbc": 2.13,
+    "mcv": 107.0,
+    "hct": 22.8
+   },
+   {
+    "lab_sample_date": "2021-04-08",
+    "hgb": 8.6,
+    "anc": 3.43,
+    "arc": 245.3,
+    "platelet_count": 479.0,
+    "wbc": 9.36,
+    "rbc": 2.4,
+    "mcv": 104.3,
+    "hct": 25.0
+   },
+   {
+    "lab_sample_date": "2021-06-17",
+    "hgb": 7.7,
+    "anc": 2.97,
+    "arc": 11.3,
+    "platelet_count": 681.0,
+    "wbc": 7.58,
+    "rbc": 7.7,
+    "mcv": 108.8,
+    "hct": 21.1
+   },
+   {
+    "lab_sample_date": "2021-08-12",
+    "hgb": 7.9,
+    "anc": 1.62,
+    "arc": 10.3,
+    "platelet_count": 795.0,
+    "wbc": 7.3,
+    "rbc": 7.9,
+    "mcv": 105.8,
+    "hct": 21.9
+   },
+   {
+    "lab_sample_date": "2021-11-04",
+    "hgb": 8.6,
+    "anc": 4.02,
+    "arc": 11.4,
+    "platelet_count": 688.0,
+    "wbc": 9.77,
+    "rbc": 2.15,
+    "mcv": 117.1,
+    "hct": 25.2
+   },
+   {
+    "lab_sample_date": "2022-01-27",
+    "hgb": 8.0,
+    "anc": 3.25,
+    "arc": 13.5,
+    "platelet_count": 621.0,
+    "wbc": 7.41,
+    "rbc": 1.97,
+    "mcv": 117.5,
+    "hct": 23.2
+   },
+   {
+    "lab_sample_date": "2022-03-24",
+    "hgb": 8.0,
+    "anc": 3.52,
+    "arc": 12.3,
+    "platelet_count": 563.0,
+    "wbc": 9.53,
+    "rbc": 2.04,
+    "mcv": 118.9,
+    "hct": 24.2
+   },
+   {
+    "lab_sample_date": "2022-07-14",
+    "hgb": 7.9,
+    "anc": 6.17,
+    "arc": 16.2,
+    "platelet_count": 526.0,
+    "wbc": 11.37,
+    "rbc": 2.0,
+    "mcv": 118.4,
+    "hct": 23.7
+   },
+   {
+    "lab_sample_date": "2022-08-11",
+    "hgb": 10.5,
+    "anc": 4.91,
+    "arc": 2.1,
+    "platelet_count": 88.0,
+    "wbc": 6.8,
+    "rbc": 3.42,
+    "mcv": 92.9,
+    "hct": 31.8
+   },
+   {
+    "lab_sample_date": "2022-10-06",
+    "hgb": 7.0,
+    "anc": 5.12,
+    "arc": 4.1,
+    "platelet_count": 461.0,
+    "wbc": 12.01,
+    "rbc": 1.88,
+    "mcv": 111.9,
+    "hct": 21.0
+   }
+  ],
+  "expected": {
+   "observed_responder_at_last_visit": false,
+   "xgboost": {
+    "probability": 0.915,
+    "threshold": 0.5720930695533752,
+    "predicted_class": "responder",
+    "correct": false
+   },
+   "svm": {
+    "probability": 0.914,
+    "threshold": 0.3093646968130433,
+    "predicted_class": "responder",
+    "correct": false
+   },
+   "logistic_reg": {
+    "probability": 0.961,
+    "threshold": 0.6775965203998927,
+    "predicted_class": "responder",
+    "correct": false
+   }
+  }
+ },
+ {
+  "folder_number": "DEMO-020",
+  "full_name": "Serwaa Dapaah",
+  "case_id": "8e49e585-5385-45d2-acc9-692436ef64aa",
+  "sex": "male",
+  "date_of_birth": "2013-03-09",
+  "genotype": "HbSS",
+  "baseline_hgb": 8.3,
+  "hu_start_date": "2022-08-01",
+  "visits": [
+   {
+    "lab_sample_date": "2022-08-01",
+    "hgb": 8.3,
+    "anc": 3.9,
+    "arc": 0.2,
+    "platelet_count": 357.0,
+    "wbc": 9.55,
+    "rbc": 3.01,
+    "mcv": 77.7,
+    "hct": 23.4
+   },
+   {
+    "lab_sample_date": "2022-11-21",
+    "hgb": 8.0,
+    "anc": 4.3,
+    "arc": 0.1,
+    "platelet_count": 380.0,
+    "wbc": 10.39,
+    "rbc": 2.82,
+    "mcv": 79.1,
+    "hct": 22.3
+   },
+   {
+    "lab_sample_date": "2023-01-30",
+    "hgb": 10.13,
+    "anc": 8.7,
+    "arc": 0.1,
+    "platelet_count": 388.0,
+    "wbc": 10.13,
+    "rbc": 3.33,
+    "mcv": 75.4,
+    "hct": 25.1
+   },
+   {
+    "lab_sample_date": "2023-05-15",
+    "hgb": 8.5,
+    "anc": 6.07,
+    "arc": 0.1,
+    "platelet_count": 477.0,
+    "wbc": 13.19,
+    "rbc": 3.39,
+    "mcv": 74.0,
+    "hct": 25.1
+   }
+  ],
+  "expected": {
+   "observed_responder_at_last_visit": false,
+   "xgboost": {
+    "probability": 0.761,
+    "threshold": 0.5720930695533752,
+    "predicted_class": "responder",
+    "correct": false
+   },
+   "svm": {
+    "probability": 0.645,
+    "threshold": 0.3093646968130433,
+    "predicted_class": "responder",
+    "correct": false
+   },
+   "logistic_reg": {
+    "probability": 0.825,
+    "threshold": 0.6775965203998927,
+    "predicted_class": "responder",
+    "correct": false
+   }
+  }
+ }
+]
