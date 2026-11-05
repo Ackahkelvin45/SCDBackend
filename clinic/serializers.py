@@ -28,12 +28,13 @@ def flag_summary(flag):
     }
 
 
-def run_data(run):
-    """PredictionRun shape (multi-model-prediction.md v2 §4.2–4.3): every registered model, in /config/ order."""
+def run_data(run, specs=None):
+    """PredictionRun shape (multi-model-prediction.md v2 §4.2–4.3): every registered model, in /config/ order,
+    or only `specs` when the app asked for one model (?model=)."""
     stored = {r.model: r for r in run.results.all()}
     outcome_known = run.outcome in ('confirmed', 'not_confirmed')
     results, votes = [], []
-    for spec in settings.PREDICTION_MODELS:
+    for spec in specs or settings.PREDICTION_MODELS:
         r = stored.get(spec['id'])
         if r is None:
             results.append({'model': spec['id'], 'model_name': spec['name'],

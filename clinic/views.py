@@ -397,12 +397,24 @@ class EligibilityView(APIView):
         return Response(rules.eligibility(my_visit(request, pk)))
 
 
+def requested_models(request):
+    """?model=<id> limits a request to one model (one APK per model in the pilot); absent means all of them."""
+    wanted = request.query_params.get('model')
+    if not wanted:
+        return settings.PREDICTION_MODELS
+    specs = [s for s in settings.PREDICTION_MODELS if s['id'] == wanted]
+    if not specs:
+        raise ApiError(400, 'invalid', 'Unknown model.', fields={'model': [f'Choose one of: {", ".join(s["id"] for s in settings.PREDICTION_MODELS)}.']})
+    return specs
+
+
 class PredictView(APIView):
     def post(self, request, pk):
         visit = my_visit(request, pk)
         patient = visit.patient
         if not patient.facility.prediction_enabled:
             raise ApiError(403, 'prediction_disabled', 'Prediction is not enabled for this facility.')
+        specs = requested_models(request)
         data = request.data if isinstance(request.data, dict) else {}
         override_reason = str(data.get('override_reason') or '').strip()
         check = rules.eligibility(visit, override_reason)
@@ -421,10 +433,10 @@ class PredictView(APIView):
                     imputed_lab_count=check['imputed_lab_count'], reliability_note=check['reliability_note'],
                     override_reason=override_reason, created_by=request.user)
 
-            # Every model runs every time; a retry fills in only the models missing from the current run
+            # Every requested model runs; a retry fills in only the models missing from the current run
             done = set(run.results.values_list('model', flat=True))
             features = predictor.build_feature_vector(visit, baseline)
-            for spec in settings.PREDICTION_MODELS:
+            for spec in specs:
                 if spec['id'] in done:
                     continue
                 try:
@@ -432,15 +444,16 @@ class PredictView(APIView):
                 except Exception:
                     logger.exception('Model %s failed for visit %s', spec['id'], visit.pk)
 
-            if not run.results.exists():
+            if not run.results.filter(model__in=[s['id'] for s in specs]).exists():
                 if created:
                     run.delete()
                 raise ApiError(503, 'prediction_unavailable', 'Prediction unavailable, try later.')
         rules.refresh_outcomes(patient)
         run.refresh_from_db()
-        return Response(run_data(run), status=status.HTTP_201_CREATED if created else status.HTTP_200_OK)
+        return Response(run_data(run, specs), status=status.HTTP_201_CREATED if created else status.HTTP_200_OK)
 
 
 class PatientPredictionsView(APIView):
     def get(self, request, pk):
-        return paginate(request, self, patient_runs(my_patient(request, pk)), run_data)
+        specs = requested_models(request)
+        return paginate(request, self, patient_runs(my_patient(request, pk)), lambda run: run_data(run, specs))

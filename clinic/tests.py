@@ -464,6 +464,22 @@ class PredictTests(ClinicTestCase):
         row = self.client.get(f'/patients/{p["id"]}/visits/').json()['results'][0]['prediction']
         self.assertEqual(row, {'predicted_class': 'responder', 'response_probability': 0.72, 'status': 'current', 'outcome': None})
 
+    def test_single_model_apk(self, predict_one):
+        p, v = self.ready_patient()
+        res = self.client.post(f'/visits/{v["id"]}/predict/?model=svm', {}, format='json')
+        self.assertEqual(res.status_code, 201)
+        self.assertEqual([r['model'] for r in res.json()['results']], ['svm'])
+        self.assertEqual(res.json()['agreement'], {'responder_votes': 1, 'of': 1, 'all_agree': True})
+        self.assertEqual([c.args[0] for c in predict_one.call_args_list], ['svm'])
+        # A second APK asking for another model adds it to the same run and sees only its own result
+        res = self.client.post(f'/visits/{v["id"]}/predict/?model=logistic_reg', {}, format='json')
+        self.assertEqual((res.status_code, [r['model'] for r in res.json()['results']]), (200, ['logistic_reg']))
+        history = self.client.get(f'/patients/{p["id"]}/predictions/?model=svm').json()['results']
+        self.assertEqual([[r['model'] for r in run['results']] for run in history], [['svm']])
+        self.assertEqual(len(self.client.post(f'/visits/{v["id"]}/predict/', {}, format='json').json()['results']), 3)
+        res = self.client.post(f'/visits/{v["id"]}/predict/?model=lightgbm', {}, format='json')
+        self.assertEqual((res.status_code, res.json()['code']), (400, 'invalid'))
+
     def test_disabled_and_ineligible(self, _):
         p, v = self.ready_patient()
         self.facility.prediction_enabled = False
@@ -560,3 +576,56 @@ class RealModelTests(ClinicTestCase):
         for r in run['results']:
             self.assertNotIn('error', r, r)
             self.assertTrue(0 <= r['response_probability'] <= 1)
+
+
+@mock.patch('ml_app.predictor.predict_one', side_effect=fake_predict)
+class DemoLoadTests(ClinicTestCase):
+    """load_demo_patients: holds back the last visit, so the app can predict, then enter it and see the outcome."""
+
+    def demo_json(self, tmp):
+        import json
+        patients = [{
+            'folder_number': 'DEMO-001', 'full_name': 'Test Demo', 'sex': 'female', 'date_of_birth': '2010-03-01', 'genotype': 'HbSS',
+            'baseline_hgb': 7.0, 'hu_start_date': ago(400),
+            'visits': [{'lab_sample_date': ago(d), 'hgb': h, 'anc': 3.0, 'arc': 0.2, 'platelet_count': 300.0,
+                        'wbc': 9.0, 'rbc': 2.5, 'mcv': 90.0, 'hct': 0.2} for d, h in ((400, 7.0), (250, 7.5), (100, 8.2), (10, 8.6))],
+            'expected': {'observed_responder_at_last_visit': True, 'xgboost': {'probability': 0.9, 'correct': True}},
+        }]
+        path = tmp / 'demo.json'
+        path.write_text(json.dumps(patients))
+        return path
+
+    def test_load_predict_then_outcome(self, _):
+        import tempfile
+        from pathlib import Path
+        from django.core.management import call_command
+        with tempfile.TemporaryDirectory() as tmp:
+            path = self.demo_json(Path(tmp))
+            call_command('load_demo_patients', facility='Komfo Anokye', json=str(path), clinician='a@example.com')
+            sheet = (Path(tmp) / 'demo_final_visits.csv').read_text().splitlines()
+            self.assertEqual(len(sheet), 2)
+            self.assertIn('DEMO-001', sheet[1])
+            self.assertIn('8.6', sheet[1])  # the held-back final visit's Hb
+            with self.assertRaises(Exception):
+                call_command('load_demo_patients', facility='Komfo Anokye', json=str(path))
+
+        patient = Patient.objects.get(folder_number='DEMO-001')
+        self.assertEqual((patient.facility, patient.research_consent, patient.visits.count()), (self.facility, True, 3))
+        self.assertEqual(patient.visits.order_by('lab_sample_date').last().pregnancy_status, 'not_pregnant')  # female, 15
+        self.assertEqual(float(patient.baseline.baseline_hgb), 7.0)
+        # Seen from the app: listed, eligible, predicted on the latest visit
+        row = self.client.get('/patients/?search=DEMO').json()['results'][0]
+        self.assertEqual(row['folder_number'], 'DEMO-001')
+        latest = max(self.client.get(f'/patients/{patient.pk}/visits/').json()['results'], key=lambda v: v['lab_sample_date'])
+        elig = self.client.get(f"/visits/{latest['id']}/prediction-eligibility/").json(); self.assertTrue(elig["eligible"], elig)
+        run = self.client.post(f'/visits/{latest["id"]}/predict/?model=xgboost', {}, format='json').json()
+        self.assertEqual([r['model'] for r in run['results']], ['xgboost'])
+        # The clinician then enters the final visit from the sheet; the outcome is confirmed (8.6 - 7.0 >= 1.0)
+        self.add_visit(patient.pk, days_ago=10, hgb=8.6, arc=0.2, hct=0.2, confirm_out_of_range=True, pregnancy_status='not_pregnant')
+        history = self.client.get(f'/patients/{patient.pk}/predictions/?model=xgboost').json()['results'][0]
+        self.assertEqual(history['observed_outcome']['meets_criterion'], True)
+        self.assertTrue(history['results'][0]['correct'])
+
+        from django.core.management import call_command
+        call_command('load_demo_patients', facility='Komfo Anokye', delete=True)
+        self.assertFalse(Patient.objects.filter(folder_number__startswith='DEMO-').exists())
