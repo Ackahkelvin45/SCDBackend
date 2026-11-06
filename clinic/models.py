@@ -12,7 +12,8 @@ class Patient(models.Model):
     SEX = [('male', 'Male'), ('female', 'Female')]
     GENOTYPE = [('HbSS', 'HbSS'), ('HbSC', 'HbSC'), ('HbSβ0', 'HbSβ0'), ('HbSβ+', 'HbSβ+'),
                 ('other', 'Other'), ('unknown', 'Unknown')]
-    ANC_FLOORS = [(Decimal('2.00'), '2.0'), (Decimal('1.25'), '1.25')]
+    ANC_FLOOR_DEFAULT = Decimal('2.00')
+    ANC_FLOOR_MIN, ANC_FLOOR_MAX = Decimal('1.00'), Decimal('5.00')  # below 1.0 is already anc_critical
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     facility = models.ForeignKey('authentication.Facility', on_delete=models.PROTECT, related_name='patients')
@@ -31,7 +32,7 @@ class Patient(models.Model):
     research_consent = models.BooleanField(default=False)
     research_consent_date = models.DateField(null=True, blank=True)
 
-    anc_flag_floor = models.DecimalField(max_digits=4, decimal_places=2, choices=ANC_FLOORS, default=Decimal('2.00'))
+    anc_flag_floor = models.DecimalField(max_digits=4, decimal_places=2, default=ANC_FLOOR_DEFAULT)
     anc_flag_floor_reason = models.CharField(max_length=500, blank=True)
     archived = models.BooleanField(default=False)
 
