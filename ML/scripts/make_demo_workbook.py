@@ -13,9 +13,11 @@ Sheets
 Run with the pinned venv: python make_demo_workbook.py
 """
 import json
+import math
 from pathlib import Path
 
 from openpyxl import Workbook
+from openpyxl.worksheet.datavalidation import DataValidation
 from openpyxl.styles import Alignment, Font, PatternFill
 from openpyxl.utils import get_column_letter
 
@@ -46,6 +48,15 @@ def sheet(wb, title, headers, rows, widths=None, input_cols=()):
     return ws
 
 
+def pct(prob):
+    """The app's figure: percentage to one decimal, rounded half up like JS Math.round (0.6374 -> 63.7)."""
+    return math.floor(prob * 1000 + 0.5) / 10
+
+
+def shown(prob):
+    return f"{pct(prob):g}%"
+
+
 def cls(c):
     return 'Likely responder' if c == 'responder' else 'Unlikely responder'
 
@@ -63,9 +74,9 @@ lines = [
     ('', None),
     ('How to test one patient', BOLD),
     ('1. Open the patient in the app and check the visit history against the Visits loaded sheet.', None),
-    ('2. Open the latest visit and tap Predict. Write what the app shows (probability and Likely / Unlikely) in the yellow columns of the Results sheet.', None),
+    ('2. Open the latest visit and tap Predict. Write what the app shows in the yellow columns of the Results sheet: type the probability, and pick Likely / Unlikely from the drop-down.', None),
     ('3. Add a new visit and type the values from the Final visit sheet for that patient. If the app asks you to confirm an out-of-range value, confirm it: the values are exactly as recorded in the study data.', None),
-    ('4. The prediction history now shows whether the prediction was confirmed. Write that in the Results sheet too.', None),
+    ('4. The prediction history now shows whether the prediction was confirmed. Pick Confirmed / Not confirmed from the drop-down in the Results sheet.', None),
     ('5. Repeat in each of the three apps (XGBoost, SVM, Logistic Regression). Each app shows only its own model.', None),
     ('', None),
     ('What to expect', BOLD),
@@ -74,8 +85,9 @@ lines = [
      'On these 20 patients every model is expected to be right 15 times and wrong 5 times, which is the same rate as on the full test set in the thesis. '
      'The expected misses are listed on the Patients sheet; seeing them is part of the test.', None),
     ('', None),
-    ('Probabilities in the app are rounded to the nearest 5%, so a small difference from the Expected probability column is normal. '
-     'The Results sheet compares the class (Likely / Unlikely) and the outcome, which must match exactly.', None),
+    ('The app shows each probability as a percentage to one decimal place, for example 63.7%. The Expected probability column uses '
+     'the same format, so the figure on screen should match the sheet exactly. Likely / Unlikely comes from comparing that probability '
+     'with the model threshold, and the outcome comes from the final visit; both must match exactly too.', None),
 ]
 for text, font in lines:
     readme.append([text])
@@ -92,7 +104,7 @@ for p in patients:
     rows.append([p['folder_number'], p['full_name'], p['sex'], p['date_of_birth'], p['genotype'], p['baseline_hgb'],
                  p['hu_start_date'], len(p['visits']) - 1, p['visits'][-2]['lab_sample_date'],
                  'Responder' if e['observed_responder_at_last_visit'] else 'Non-responder']
-                + [x for m in MODELS for x in (e[m]['probability'], cls(e[m]['predicted_class']))]
+                + [x for m in MODELS for x in (shown(e[m]['probability']), cls(e[m]['predicted_class']))]
                 + [', '.join(misses) if misses else 'All three correct'])
 sheet(wb, 'Patients',
       ['Folder no.', 'Name in app', 'Sex', 'Date of birth', 'Genotype', 'Baseline Hb (g/dL)', 'HU start date', 'Visits loaded',
@@ -117,27 +129,36 @@ sheet(wb, 'Final visit', ['Folder no.', 'Name in app', 'Lab sample date to enter
       + ['Transfused last 3 months', 'Pregnancy status (females 12–50)', 'Baseline Hb', 'Hb change vs baseline', 'Expected outcome in app'],
       rows, widths={'Expected outcome in app': 30})
 
-# Results: one row per patient x model, with blanks for the app's values and a MATCH formula
+# Results: one row per patient x model, with blanks for the app's values and MATCH formulas
 headers = ['Folder no.', 'Name in app', 'App / model', 'Expected probability', 'Expected class', 'Expected outcome',
            'App showed: probability', 'App showed: class (Likely / Unlikely)', 'App showed: outcome (Confirmed / Not confirmed)',
-           'Class matches?', 'Outcome matches?', 'Notes']
+           'Probability matches?', 'Class matches?', 'Outcome matches?', 'Notes']
 rows = []
 for p in patients:
     e = p['expected']
     outcome = 'Confirmed' if e['observed_responder_at_last_visit'] else 'Not confirmed'
     for m, name in MODELS.items():
-        rows.append([p['folder_number'], p['full_name'], name, e[m]['probability'], cls(e[m]['predicted_class']), outcome,
-                     None, None, None, None, None, None])
-ws = sheet(wb, 'Results', headers, rows, widths={h: 22 for h in headers}, input_cols=(7, 8, 9, 12))
+        rows.append([p['folder_number'], p['full_name'], name, pct(e[m]['probability']), cls(e[m]['predicted_class']),
+                     outcome] + [None] * 7)
+ws = sheet(wb, 'Results', headers, rows, widths={h: 22 for h in headers}, input_cols=(7, 8, 9, 13))
 for r in range(2, ws.max_row + 1):
-    ws[f'J{r}'] = f'=IF(H{r}="","",IF(LEFT(LOWER(H{r}),3)=LEFT(LOWER(E{r}),3),"MATCH","MISMATCH"))'
-    ws[f'K{r}'] = f'=IF(I{r}="","",IF(LOWER(I{r})=LOWER(F{r}),"MATCH","MISMATCH"))'
+    ws[f'D{r}'].number_format = ws[f'G{r}'].number_format = '0.0"%"'
+    # typed "63.7%" is stored by Excel as 0.637, typed "63.7" as 63.7: accept either
+    ws[f'J{r}'] = f'=IF(G{r}="","",IF(OR(ROUND(G{r},1)=D{r},ROUND(G{r}*100,1)=D{r}),"MATCH","MISMATCH"))'
+    ws[f'K{r}'] = f'=IF(H{r}="","",IF(H{r}=E{r},"MATCH","MISMATCH"))'
+    ws[f'L{r}'] = f'=IF(I{r}="","",IF(I{r}=F{r},"MATCH","MISMATCH"))'
 n = ws.max_row
+# Drop-downs, so the tester picks the exact wording and the checks are a plain comparison
+for col, choices in (('H', 'Likely responder,Unlikely responder'), ('I', 'Confirmed,Not confirmed')):
+    dv = DataValidation(type='list', formula1=f'"{choices}"', allow_blank=True)
+    ws.add_data_validation(dv)
+    dv.add(f'{col}2:{col}{n}')
 ws.append([])
-ws.append(['Summary', None, 'Class matches', f'=COUNTIF(J2:J{n},"MATCH")', 'of', f'=COUNTA(H2:H{n})'])
-ws.append([None, None, 'Outcome matches', f'=COUNTIF(K2:K{n},"MATCH")', 'of', f'=COUNTA(I2:I{n})'])
+ws.append(['Summary', None, 'Probability matches', f'=COUNTIF(J2:J{n},"MATCH")', 'of', f'=COUNT(G2:G{n})'])
+ws.append([None, None, 'Class matches', f'=COUNTIF(K2:K{n},"MATCH")', 'of', f'=COUNTA(H2:H{n})'])
+ws.append([None, None, 'Outcome matches', f'=COUNTIF(L2:L{n},"MATCH")', 'of', f'=COUNTA(I2:I{n})'])
 for m, name in MODELS.items():
-    ws.append([None, None, f'{name}: class matches', f'=COUNTIFS(C2:C{n},"{name}",J2:J{n},"MATCH")', 'of', f'=COUNTIFS(C2:C{n},"{name}",H2:H{n},"<>")'])
+    ws.append([None, None, f'{name}: class matches', f'=COUNTIFS(C2:C{n},"{name}",K2:K{n},"MATCH")', 'of', f'=COUNTIFS(C2:C{n},"{name}",H2:H{n},"<>")'])
 ws.cell(n + 2, 1).font = BOLD
 
 out = ROOT / 'outputs/demo_workbook.xlsx'

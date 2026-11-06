@@ -90,7 +90,7 @@
   "expected": {
    "observed_responder_at_last_visit": true,
    "xgboost": {
-    "probability": 0.923,
+    "probability": 0.9227,
     "threshold": 0.5720930695533752,
     "predicted_class": "responder",
     "correct": true
@@ -102,7 +102,7 @@
     "correct": true
    },
    "logistic_reg": {
-    "probability": 0.982,
+    "probability": 0.9816,
     "threshold": 0.6775965203998927,
     "predicted_class": "responder",
     "correct": true
@@ -189,19 +189,19 @@
   "expected": {
    "observed_responder_at_last_visit": true,
    "xgboost": {
-    "probability": 0.864,
+    "probability": 0.8635,
     "threshold": 0.5720930695533752,
     "predicted_class": "responder",
     "correct": true
    },
    "svm": {
-    "probability": 0.722,
+    "probability": 0.7219,
     "threshold": 0.3093646968130433,
     "predicted_class": "responder",
     "correct": true
    },
    "logistic_reg": {
-    "probability": 0.866,
+    "probability": 0.8656,
     "threshold": 0.6775965203998927,
     "predicted_class": "responder",
     "correct": true
@@ -343,19 +343,19 @@
   "expected": {
    "observed_responder_at_last_visit": true,
    "xgboost": {
-    "probability": 0.847,
+    "probability": 0.8467,
     "threshold": 0.5720930695533752,
     "predicted_class": "responder",
     "correct": true
    },
    "svm": {
-    "probability": 0.571,
+    "probability": 0.5686,
     "threshold": 0.3093646968130433,
     "predicted_class": "responder",
     "correct": true
    },
    "logistic_reg": {
-    "probability": 0.788,
+    "probability": 0.7855,
     "threshold": 0.6775965203998927,
     "predicted_class": "responder",
     "correct": true
@@ -486,19 +486,19 @@
   "expected": {
    "observed_responder_at_last_visit": true,
    "xgboost": {
-    "probability": 0.795,
+    "probability": 0.7952,
     "threshold": 0.5720930695533752,
     "predicted_class": "responder",
     "correct": true
    },
    "svm": {
-    "probability": 0.572,
+    "probability": 0.5724,
     "threshold": 0.3093646968130433,
     "predicted_class": "responder",
     "correct": true
    },
    "logistic_reg": {
-    "probability": 0.777,
+    "probability": 0.7772,
     "threshold": 0.6775965203998927,
     "predicted_class": "responder",
     "correct": true
@@ -629,19 +629,19 @@
   "expected": {
    "observed_responder_at_last_visit": true,
    "xgboost": {
-    "probability": 0.947,
+    "probability": 0.9466,
     "threshold": 0.5720930695533752,
     "predicted_class": "responder",
     "correct": true
    },
    "svm": {
-    "probability": 0.917,
+    "probability": 0.9174,
     "threshold": 0.3093646968130433,
     "predicted_class": "responder",
     "correct": true
    },
    "logistic_reg": {
-    "probability": 0.965,
+    "probability": 0.9651,
     "threshold": 0.6775965203998927,
     "predicted_class": "responder",
     "correct": true
@@ -778,13 +778,13 @@
     "correct": true
    },
    "svm": {
-    "probability": 0.511,
+    "probability": 0.5108,
     "threshold": 0.3093646968130433,
     "predicted_class": "responder",
     "correct": true
    },
    "logistic_reg": {
-    "probability": 0.75,
+    "probability": 0.7502,
     "threshold": 0.6775965203998927,
     "predicted_class": "responder",
     "correct": true
@@ -1003,19 +1003,19 @@
   "expected": {
    "observed_responder_at_last_visit": true,
    "xgboost": {
-    "probability": 0.912,
+    "probability": 0.9116,
     "threshold": 0.5720930695533752,
     "predicted_class": "responder",
     "correct": true
    },
    "svm": {
-    "probability": 0.76,
+    "probability": 0.7599,
     "threshold": 0.3093646968130433,
     "predicted_class": "responder",
     "correct": true
    },
    "logistic_reg": {
-    "probability": 0.901,
+    "probability": 0.9003,
     "threshold": 0.6775965203998927,
     "predicted_class": "responder",
     "correct": true
@@ -1091,19 +1091,19 @@
   "expected": {
    "observed_responder_at_last_visit": true,
    "xgboost": {
-    "probability": 0.219,
+    "probability": 0.2182,
     "threshold": 0.5720930695533752,
     "predicted_class": "non_responder",
     "correct": false
    },
    "svm": {
-    "probability": 0.125,
+    "probability": 0.1263,
     "threshold": 0.3093646968130433,
     "predicted_class": "non_responder",
     "correct": false
    },
    "logistic_reg": {
-    "probability": 0.238,
+    "probability": 0.2398,
     "threshold": 0.6775965203998927,
     "predicted_class": "non_responder",
     "correct": false
@@ -1190,19 +1190,19 @@
   "expected": {
    "observed_responder_at_last_visit": true,
    "xgboost": {
-    "probability": 0.383,
+    "probability": 0.3827,
     "threshold": 0.5720930695533752,
     "predicted_class": "non_responder",
     "correct": false
    },
    "svm": {
-    "probability": 0.271,
+    "probability": 0.2718,
     "threshold": 0.3093646968130433,
     "predicted_class": "non_responder",
     "correct": false
    },
    "logistic_reg": {
-    "probability": 0.499,
+    "probability": 0.5003,
     "threshold": 0.6775965203998927,
     "predicted_class": "non_responder",
     "correct": false
@@ -1278,19 +1278,19 @@
   "expected": {
    "observed_responder_at_last_visit": true,
    "xgboost": {
-    "probability": 0.204,
+    "probability": 0.2036,
     "threshold": 0.5720930695533752,
     "predicted_class": "non_responder",
     "correct": false
    },
    "svm": {
-    "probability": 0.179,
+    "probability": 0.1797,
     "threshold": 0.3093646968130433,
     "predicted_class": "non_responder",
     "correct": false
    },
    "logistic_reg": {
-    "probability": 0.294,
+    "probability": 0.2954,
     "threshold": 0.6775965203998927,
     "predicted_class": "non_responder",
     "correct": false
@@ -1416,13 +1416,13 @@
     "correct": true
    },
    "svm": {
-    "probability": 0.065,
+    "probability": 0.0652,
     "threshold": 0.3093646968130433,
     "predicted_class": "non_responder",
     "correct": true
    },
    "logistic_reg": {
-    "probability": 0.138,
+    "probability": 0.1386,
     "threshold": 0.6775965203998927,
     "predicted_class": "non_responder",
     "correct": true
@@ -1504,13 +1504,13 @@
     "correct": true
    },
    "svm": {
-    "probability": 0.013,
+    "probability": 0.0128,
     "threshold": 0.3093646968130433,
     "predicted_class": "non_responder",
     "correct": true
    },
    "logistic_reg": {
-    "probability": 0.026,
+    "probability": 0.0262,
     "threshold": 0.6775965203998927,
     "predicted_class": "non_responder",
     "correct": true
@@ -1597,19 +1597,19 @@
   "expected": {
    "observed_responder_at_last_visit": false,
    "xgboost": {
-    "probability": 0.184,
+    "probability": 0.1841,
     "threshold": 0.5720930695533752,
     "predicted_class": "non_responder",
     "correct": true
    },
    "svm": {
-    "probability": 0.061,
+    "probability": 0.0615,
     "threshold": 0.3093646968130433,
     "predicted_class": "non_responder",
     "correct": true
    },
    "logistic_reg": {
-    "probability": 0.104,
+    "probability": 0.1044,
     "threshold": 0.6775965203998927,
     "predicted_class": "non_responder",
     "correct": true
@@ -1751,7 +1751,7 @@
   "expected": {
    "observed_responder_at_last_visit": false,
    "xgboost": {
-    "probability": 0.047,
+    "probability": 0.0473,
     "threshold": 0.5720930695533752,
     "predicted_class": "non_responder",
     "correct": true
@@ -1905,19 +1905,19 @@
   "expected": {
    "observed_responder_at_last_visit": false,
    "xgboost": {
-    "probability": 0.344,
+    "probability": 0.3455,
     "threshold": 0.5720930695533752,
     "predicted_class": "non_responder",
     "correct": true
    },
    "svm": {
-    "probability": 0.222,
+    "probability": 0.2223,
     "threshold": 0.3093646968130433,
     "predicted_class": "non_responder",
     "correct": true
    },
    "logistic_reg": {
-    "probability": 0.393,
+    "probability": 0.3939,
     "threshold": 0.6775965203998927,
     "predicted_class": "non_responder",
     "correct": true
@@ -2037,19 +2037,19 @@
   "expected": {
    "observed_responder_at_last_visit": false,
    "xgboost": {
-    "probability": 0.207,
+    "probability": 0.2071,
     "threshold": 0.5720930695533752,
     "predicted_class": "non_responder",
     "correct": true
    },
    "svm": {
-    "probability": 0.118,
+    "probability": 0.117,
     "threshold": 0.3093646968130433,
     "predicted_class": "non_responder",
     "correct": true
    },
    "logistic_reg": {
-    "probability": 0.245,
+    "probability": 0.2425,
     "threshold": 0.6775965203998927,
     "predicted_class": "non_responder",
     "correct": true
@@ -2213,7 +2213,7 @@
   "expected": {
    "observed_responder_at_last_visit": false,
    "xgboost": {
-    "probability": 0.188,
+    "probability": 0.1882,
     "threshold": 0.5720930695533752,
     "predicted_class": "non_responder",
     "correct": true
@@ -2225,7 +2225,7 @@
     "correct": true
    },
    "logistic_reg": {
-    "probability": 0.129,
+    "probability": 0.1287,
     "threshold": 0.6775965203998927,
     "predicted_class": "non_responder",
     "correct": true
@@ -2345,19 +2345,19 @@
   "expected": {
    "observed_responder_at_last_visit": false,
    "xgboost": {
-    "probability": 0.31,
+    "probability": 0.3097,
     "threshold": 0.5720930695533752,
     "predicted_class": "non_responder",
     "correct": true
    },
    "svm": {
-    "probability": 0.159,
+    "probability": 0.1582,
     "threshold": 0.3093646968130433,
     "predicted_class": "non_responder",
     "correct": true
    },
    "logistic_reg": {
-    "probability": 0.311,
+    "probability": 0.3089,
     "threshold": 0.6775965203998927,
     "predicted_class": "non_responder",
     "correct": true
@@ -2488,19 +2488,19 @@
   "expected": {
    "observed_responder_at_last_visit": false,
    "xgboost": {
-    "probability": 0.915,
+    "probability": 0.9146,
     "threshold": 0.5720930695533752,
     "predicted_class": "responder",
     "correct": false
    },
    "svm": {
-    "probability": 0.914,
+    "probability": 0.9135,
     "threshold": 0.3093646968130433,
     "predicted_class": "responder",
     "correct": false
    },
    "logistic_reg": {
-    "probability": 0.961,
+    "probability": 0.9612,
     "threshold": 0.6775965203998927,
     "predicted_class": "responder",
     "correct": false
@@ -2565,19 +2565,19 @@
   "expected": {
    "observed_responder_at_last_visit": false,
    "xgboost": {
-    "probability": 0.761,
+    "probability": 0.7615,
     "threshold": 0.5720930695533752,
     "predicted_class": "responder",
     "correct": false
    },
    "svm": {
-    "probability": 0.645,
+    "probability": 0.6454,
     "threshold": 0.3093646968130433,
     "predicted_class": "responder",
     "correct": false
    },
    "logistic_reg": {
-    "probability": 0.825,
+    "probability": 0.8256,
     "threshold": 0.6775965203998927,
     "predicted_class": "responder",
     "correct": false

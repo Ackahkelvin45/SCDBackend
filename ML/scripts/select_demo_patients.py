@@ -106,6 +106,16 @@ for cls, k in ((1, N // 2), (0, N - N // 2)):
 chosen = pd.concat(parts)
 assert len(chosen) == N, len(chosen)
 
+# The deployed server feeds the model exact age on the predicted visit's date ((lab date - dob) / 365.25), while the
+# dataset's age column is one whole number per patient. Re-score the chosen rows the way the server will, so the
+# workbook shows what the app shows. The selection above is unchanged, and so must every class be.
+prev_date = chosen['Case_ID'].map(lambda c: hu.loc[hu['Case_ID'] == c, 'Lab_Visit_Date'].sort_values().iloc[-2])
+chosen['age'] = (prev_date - pd.to_datetime(chosen['dob'])).dt.days / 365.25
+for mid, key in MODELS.items():
+    before = chosen[f'p_{mid}'] >= thresholds[key]['Best F1']
+    chosen[f'p_{mid}'] = joblib.load(ROOT / f'outputs/{mid}.pkl').predict_proba(chosen[FEATURES])[:, 1]
+    assert ((chosen[f'p_{mid}'] >= thresholds[key]['Best F1']) == before).all(), f'{mid}: a class changed with exact age'
+
 # ── export ──────────────────────────────────────────────────────────────────
 patients, rows = [], []
 for i, (_, r) in enumerate(chosen.iterrows(), 1):
@@ -119,7 +129,7 @@ for i, (_, r) in enumerate(chosen.iterrows(), 1):
                     **{c: (None if pd.isna(v[c]) else float(v[c])) for c in LABS}} for _, v in visits.iterrows()],
         'expected': {
             'observed_responder_at_last_visit': bool(r['Responder']),
-            **{m: {'probability': round(float(r[f'p_{m}']), 3), 'threshold': float(thresholds[MODELS[m]]['Best F1']),
+            **{m: {'probability': round(float(r[f'p_{m}']), 4), 'threshold': float(thresholds[MODELS[m]]['Best F1']),
                    'predicted_class': 'responder' if r[f'p_{m}'] >= thresholds[MODELS[m]]['Best F1'] else 'non_responder',
                    'correct': bool(r[f'ok_{m}'])} for m in MODELS},
         },
