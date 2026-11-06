@@ -258,6 +258,18 @@ class VisitTests(ClinicTestCase):
         p2 = self.make_patient(folder_number='F-002', full_name='Other')
         self.assertEqual([f['rule'] for f in self.add_visit(p2['id'], anc=1.5)['flags']], ['anc_low'])
 
+    def test_anc_floor_custom_value(self):
+        p = self.make_patient(anc_flag_floor=1.6, anc_flag_floor_reason='Benign ethnic neutropenia')
+        url = f'/patients/{p["id"]}/'
+        self.assertEqual(self.client.get(url).json()['anc_flag_floor'], 1.6)
+        self.assertEqual([f['rule'] for f in self.add_visit(p['id'], days_ago=20, anc=1.5)['flags']], ['anc_low'])
+        self.assertEqual(self.add_visit(p['id'], days_ago=10, anc=1.7)['flags'], [])
+        for bad in (0.5, 5.5):
+            res = self.client.patch(url, {'anc_flag_floor': bad, 'anc_flag_floor_reason': 'x'}, format='json')
+            self.assertIn('anc_flag_floor', res.json()['fields'])
+        res = self.client.patch(url, {'anc_flag_floor': 2.5, 'anc_flag_floor_reason': ''}, format='json')
+        self.assertIn('anc_flag_floor_reason', res.json()['fields'])
+
     def test_validation(self):
         p = self.make_patient()
         res = self.client.post(f'/patients/{p["id"]}/visits/', {'lab_sample_date': ago(1), 'transfused_last_3_months': 'no',

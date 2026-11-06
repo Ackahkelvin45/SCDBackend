@@ -119,15 +119,17 @@ class PatientSerializer(serializers.ModelSerializer):
         return value
 
     def validate_anc_flag_floor(self, value):
-        if value not in (2.0, 1.25):
-            raise serializers.ValidationError('ANC flag floor must be 2.0 or 1.25.')
-        return Decimal(str(value))
+        value = Decimal(str(value)).quantize(Decimal('0.01'))
+        if not Patient.ANC_FLOOR_MIN <= value <= Patient.ANC_FLOOR_MAX:
+            raise serializers.ValidationError(
+                f'ANC flag floor must be between {Patient.ANC_FLOOR_MIN} and {Patient.ANC_FLOOR_MAX} ×10⁹/L.')
+        return value
 
     def validate(self, attrs):
         floor = attrs.get('anc_flag_floor', getattr(self.instance, 'anc_flag_floor', Decimal('2.00')))
         reason = attrs.get('anc_flag_floor_reason', getattr(self.instance, 'anc_flag_floor_reason', ''))
-        if floor == Decimal('1.25') and not (reason or '').strip():
-            raise serializers.ValidationError({'anc_flag_floor_reason': 'Give a reason for lowering the ANC flag floor.'})
+        if floor != Patient.ANC_FLOOR_DEFAULT and not (reason or '').strip():
+            raise serializers.ValidationError({'anc_flag_floor_reason': 'Give a reason for changing the ANC flag floor.'})
         return attrs
 
 
